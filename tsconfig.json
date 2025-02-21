@@ -1,0 +1,39 @@
+{
+  "compilerOptions": {
+    /* 🌍 Target & Module */
+    "target": "ES2022", // קוד מודרני עם תמיכה ב-Class Fields, Top-Level Await ועוד
+    "module": "NodeNext", // מאפשר ESM מודולס ב-Node.js 18+
+    "moduleResolution": "NodeNext", // התאמה לרזולוציית מודולים מודרנית
+    "allowSyntheticDefaultImports": true, // מאפשר `import express from "express"`
+    "esModuleInterop": true, // תמיכה טובה יותר במודולי CommonJS
+
+    /* 🔍 Type Checking */
+    "strict": true, // מחמיר על בדיקות טיפוסים
+    "noImplicitAny": true, // מונע `any` מרומז
+    "strictNullChecks": true, // מחייב בדיקות `null` ו-`undefined`
+    "strictPropertyInitialization": true, // מונע טעויות אתחול מחלקות
+
+    /* 📂 Paths & Resolution */
+    "baseUrl": "./src", // שורש הקבצים
+    "rootDir": "./src", // תיקיית קוד המקור
+    "outDir": "./dist", // תיקיית הפלט
+    "resolveJsonModule": true, // מאפשר `import config from "./config.json"`
+    "paths": {
+      "@/*": ["./src/*"] // מאפשר יבוא מקוצר `import x from "@/utils"`
+    },
+
+    /* 🏎 Performance & Build */
+    "incremental": true, // בנייה אינקרמנטלית מהירה יותר
+    "skipLibCheck": true, // חוסך זמן קומפילציה על `.d.ts`
+    "noEmit": false, // משאיר את אפשרות ההמרה ל-JS
+    "sourceMap": true, // מייצר source maps ל-debugging
+
+    /* 🛠 Debugging & Development */
+    "forceConsistentCasingInFileNames": true, // קייס-סנסיטיב בקבצים
+    "noUnusedLocals": true, // מזהיר על משתנים לא בשימוש
+    "noUnusedParameters": true, // מזהיר על פרמטרים לא בשימוש
+    "noFallthroughCasesInSwitch": true // מונע טעויות `switch`
+  },
+  "include": ["src"], // כולל את כל קבצי TypeScript תחת `src`
+  "exclude": ["./node_modules", "dist"] // מונע קבצים לא רלוונטיים
+}
