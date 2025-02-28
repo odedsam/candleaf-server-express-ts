@@ -2,7 +2,7 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-const requiredEnvVars = ["MONGO_URI", "JWT_SECRET", "PORT", "GOOGLE_CLIENT_ID", "GOOGLE_CLIENT_SECRET"];
+const requiredEnvVars = ["MONGO_URI", "JWT_SECRET", "PORT", "GOOGLE_CLIENT_ID", "GOOGLE_SECRET_ID"];
 
 requiredEnvVars.forEach((varName) => {
   if (!process.env[varName]) {
@@ -15,6 +15,6 @@ export const ENV = {
   MONGO_URI: process.env.MONGO_URI as string,
   JWT_SECRET: process.env.JWT_SECRET as string,
   GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID as string,
-  GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET as string,
-  PORT: process.env.PORT ? Number(process.env.PORT) : 3000,
+  GOOGLE_SECRET_ID: process.env.GOOGLE_SECRET_ID as string,
+  PORT: process.env.PORT ? Number(process.env.PORT) : 5002,
 };
