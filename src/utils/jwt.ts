@@ -1,27 +1,37 @@
-import jwt, { JwtPayload } from "jsonwebtoken";
+import jwt, { JwtPayload, Secret, SignOptions } from "jsonwebtoken";
 import { ENV } from "../config/env";
 
-// generate Access & Refresh Tokens
-export const generateTokens = (userId: string) => {
-  const accessToken = jwt.sign({ id: userId }, ENV.JWT_SECRET, { expiresIn: "15m" });
-  const refreshToken = jwt.sign({ id: userId }, ENV.JWT_SECRET, { expiresIn: "7d" });
-  return { accessToken, refreshToken };
+// Ensure ENV.JWT_SECRET is a string
+const JWT_SECRET: Secret = ENV.JWT_SECRET as string;
+
+// Generate a token (Access/Refresh)
+export const generateToken = (tokenId: string, expiresIn: SignOptions["expiresIn"]) => {
+  const options: SignOptions = { expiresIn };
+  return jwt.sign({ id: tokenId }, JWT_SECRET, options);
 };
 
-// verify Access Token
-export const verifyAccessToken = (token: string): JwtPayload | null => {
+// Generate Access & Refresh Tokens
+export const generateTokens = (tokenId: string) => ({
+  accessToken: generateToken(tokenId, "21d"),
+  refreshToken: generateToken(tokenId, "31d"),
+});
+
+// Verify token (Access/Refresh)
+export const verifyToken = (token: string) => {
   try {
-    return jwt.verify(token, ENV.JWT_SECRET) as JwtPayload;
-  } catch (error) {
-    return null;
+    const decoded = jwt.verify(token, JWT_SECRET) as JwtPayload;
+    return {
+      valid: true,
+      payload: decoded,
+      expiresAt: decoded.exp ? new Date(decoded.exp * 1000) : null,
+    };
+  } catch {
+    return { valid: false, payload: null, expiresAt: null };
   }
 };
 
-// verify Refresh Token
-export const verifyRefreshToken = (token: string): JwtPayload | null => {
-  try {
-    return jwt.verify(token, ENV.JWT_SECRET) as JwtPayload;
-  } catch (error) {
-    return null;
-  }
+// Decode a token without verification (to check expiration)
+export const decodeToken = (token: string) => {
+  const decoded = jwt.decode(token) as JwtPayload | null;
+  return decoded ? { ...decoded, expiresAt: decoded.exp ? new Date(decoded.exp * 1000) : null } : null;
 };

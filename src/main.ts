@@ -1,17 +1,30 @@
 import express from "express";
 import { ENV } from "./config/env";
 import { connectDB } from "./config/db";
-import authRoutes from "./routes/auth";
+import cors from "cors";
+import routes from "./routes"; 
+import { notFoundMiddleware } from "./middleware/notFoundMiddleware";
+import { loggerMiddleware } from "./middleware/loggerMiddleware";
+import { errorMiddleware } from "./middleware/errorMiddleware";
 
 const app = express();
+
+const corsOptions = cors({
+  origin: "http://localhost:5173",
+  credentials: true,
+});
+
 app.use(express.json());
+app.use(corsOptions);
+
+app.use("/api", routes);
+
+// Middleware 
+app.use(loggerMiddleware);
+app.use(errorMiddleware);
+app.use(notFoundMiddleware);
 
 connectDB();
-
-app.use("/api/auth", authRoutes);
-
-// It means all routes inside authRoutes will start with /api/auth.
-// 	•	If a route inside auth.ts is /signup, the final URL will be:
-// http://localhost:5000/api/auth/signup
-
-app.listen(ENV.PORT, () => console.log(` Server running on port ${ENV.PORT}`));
+app.listen(ENV.PORT, () =>
+  console.log(`🚀 Server running on port ${ENV.PORT}`)
+);
