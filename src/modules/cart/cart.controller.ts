@@ -1,6 +1,9 @@
-import { Response } from "express";
+import { Response, Request } from "express";
 import { getUserCart, addToCart, removeFromCart, syncCart } from "../cart/cart.service";
-import { AuthRequest } from "../../middleware/authMiddleware";
+
+export interface AuthRequest extends Request {
+  user?: { id: string; email: string; role?: string }; // 🛠️ ודא שהשדות קיימים לפי המודל שלך
+}
 
 export const getCart = async (req: AuthRequest, res: Response): Promise<void> => {
   try {

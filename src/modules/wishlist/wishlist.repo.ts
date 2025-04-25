@@ -1,5 +1,4 @@
-import WishlistModel, { IWishlist } from "./wishlist.model";
-
+import WishlistModel  from "./wishlist.model";
 export class WishlistRepository {
   async addToWishlist(userId: string, productId: string) {
     return await WishlistModel.create({ userId, productId });

@@ -1,4 +1,4 @@
-# my md's 
+# my md's
 doc.md
 todo.md
 shortcut.md
@@ -19,12 +19,16 @@ out/
 .idea/
 .DS_Store
 
-# 🔥 Ignore TypeScript Build Files
+# Ignore TypeScript Build Files
 *.tsbuildinfo
 *.map
 *.log
 
+#private
+
+
 # Keep environment variables out of version control
+*.env
 .env
 .env.local
 .env.development
