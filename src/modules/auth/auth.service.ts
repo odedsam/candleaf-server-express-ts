@@ -1,8 +1,8 @@
 import bcrypt from "bcryptjs";
-import { AuthRepository } from "@/modules/auth/auth.repo";
-import { UserRepository } from "@/modules/user/user.repo";
-import { fetchGoogleUser } from "@/providers/google.provider";
-import { createToken, verifyToken } from "@/utils/jwt";
+import { AuthRepository } from "./auth.repo";
+import { createToken, verifyToken } from "../../utils/jwt";
+import { fetchGoogleUser } from "../../providers/google.provider";
+import { UserRepository } from "../user/user.repo";
 
 
 const authRepo = new AuthRepository();

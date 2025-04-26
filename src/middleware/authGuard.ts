@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express'
 import jwt, {JwtPayload, VerifyErrors} from 'jsonwebtoken'
 import { ENV } from '../config/env'
-import { AuthenticatedRequest, UserPayload } from '@/types'
+import { AuthenticatedRequest, UserPayload } from '../types'
 
 type Decoded = string | JwtPayload | undefined
 

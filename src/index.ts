@@ -3,9 +3,9 @@ import cookieParser from "cookie-parser";
 import routes from "./routes";
 import cors from "cors";
 import session from "express-session";
-import { corsOptions, ENV } from "@/config/env";
-import { connectDB } from "@/config/db";
-import { logger } from "@/middleware/logger";
+import { corsOptions, ENV } from "./config/env";
+import { connectDB } from "./config/db";
+import { logger } from "./middleware/logger";
 
 const app = express();
 app.use(cookieParser());
@@ -25,6 +25,6 @@ app.use(
 app.use(logger);
 
 connectDB();
-app.listen(ENV.PORT, () =>console.log(`🚀 Server running on port ${ENV.PORT}`));
+app.listen(ENV.PORT, () =>console.log(` Server running on port ${ENV.PORT}`));
 
 

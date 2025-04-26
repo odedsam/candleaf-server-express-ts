@@ -1,8 +1,8 @@
 {
   "compilerOptions": {
     "target": "ES2022",
-    "module": "NodeNext",
-    "moduleResolution": "NodeNext",
+    "module": "CommonJS",
+    "moduleResolution": "Node",
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
 
@@ -12,13 +12,8 @@
     "strictPropertyInitialization": true,
 
     "rootDir": "./src",
-    "outDir": "./dist",
+    "outDir": "dist/",
     "resolveJsonModule": true,
-    "baseUrl": "./src",
-    "paths": {
-      "@/*": ["*"]
-    },
-
     "incremental": true,
     "skipLibCheck": true,
     "noEmit": false,
@@ -29,7 +24,6 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
-  "files": ["src/main.ts"],
-  "include": ["src"],
-  "exclude": ["./node_modules", "dist"]
+  "include": ["src/**/*.ts"],
+  "exclude": ["node_modules", "dist"]
 }

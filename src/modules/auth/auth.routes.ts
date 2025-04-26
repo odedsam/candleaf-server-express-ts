@@ -1,8 +1,9 @@
 import { Router, RequestHandler } from "express";
 import { AuthController } from "./auth.controller";
-import { validateRequest } from "@/middleware/validateRequest";
-import { registerSchema, googleLoginSchema, emailPasswordSchema } from "@/schemas/authSchema";
-import { authGuard } from "@/middleware/authGuard";
+import { authGuard } from "../../middleware/authGuard";
+import { emailPasswordSchema, googleLoginSchema } from "../../schemas/authSchema";
+import { validateRequest } from "../../middleware/validateRequest";
+import { registerSchema } from "../../schemas/userSchema";
 
 const router = Router();
 const authController = new AuthController();

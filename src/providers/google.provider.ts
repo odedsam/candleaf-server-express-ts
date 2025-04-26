@@ -1,5 +1,5 @@
-import { colorError, colorSuccess } from "@/utils";
-import type { GoogleUser } from "@/types";
+import { GoogleUser } from "../types/user";
+import { colorError, colorSuccess } from "../utils";
 
 
 export const fetchGoogleUser = async (accessToken: string): Promise<GoogleUser | null> => {

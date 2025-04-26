@@ -1,5 +1,5 @@
 import jwt, { SignOptions } from "jsonwebtoken";
-import { ENV } from "config/env";
+import { ENV } from "../config/env";
 
 interface UserPayload {
   userId: string;
