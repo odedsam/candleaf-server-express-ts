@@ -26,10 +26,11 @@ export const ENV = {
   PORT: Number(validatedEnv.PORT),
   NODE_ENV: isProduction ? "production" : "development",
 };
-const originUrl = ENV.NODE_ENV === "development" ? "http://localhost:5173" : "https://candleaf-front.vercel.app/";
+const originUrl = ENV.NODE_ENV === "development" ?"https://candleaf-front.vercel.app": "http://localhost:5173"
 
 export const corsOptions = {
   origin: originUrl,
   methods: "GET,POST,PUT,DELETE",
   credentials: true,
+  allowedHeaders: 'Content-Type, Authorization',
 };

@@ -13,9 +13,9 @@ export class AuthController {
     try {
       const { name, email, password } = req.body;
       const result = await authService.register(name, email, password);
-      res.status(201).json(result); // No explicit return
+      res.status(201).json(result);
     } catch (error: any) {
-      res.status(400).json({ message: error.message }); // No explicit return
+      res.status(400).json({ message: error.message });
     }
   }
 
@@ -23,9 +23,9 @@ export class AuthController {
     try {
       const { email, password } = req.body;
       const result = await authService.login(email, password);
-      res.status(200).json(result); // No explicit return
+      res.status(200).json(result);
     } catch (error: any) {
-      res.status(401).json({ message: 'Invalid credentials' }); // No explicit return
+      res.status(401).json({ message: 'Invalid credentials' });
     }
   }
 
