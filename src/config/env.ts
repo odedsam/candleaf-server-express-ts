@@ -30,7 +30,6 @@ const originUrl = ENV.NODE_ENV === "development" ? "https://candleaf-front.verce
 
 export const corsOptions = {
   origin: originUrl,
-  methods: "GET,POST,PUT,DELETE",
+  methods: ["GET","POST","PUT","DELETE"],
   credentials: true,
-  allowedHeaders: 'Content-Type, Authorization',
 };
