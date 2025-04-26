@@ -4,14 +4,6 @@ import { authGuard } from "../../middleware/authGuard";
 import { emailPasswordSchema, googleLoginSchema } from "../../schemas/authSchema";
 import { validateRequest } from "../../middleware/validateRequest";
 import { registerSchema } from "../../schemas/userSchema";
-import cors from "cors"
-
-export const corsOptions = {
-  origin: "https://candleaf-front.vercel.app",
-  methods: "GET,POST,PUT,DELETE",
-  credentials: true,
-  allowedHeaders: 'Content-Type, Authorization',
-};
 
 const router = Router();
 const authController = new AuthController();
@@ -19,7 +11,8 @@ const authController = new AuthController();
 const bindHandler = (controller: any, method: string): RequestHandler => {
   return controller[method].bind(controller) as RequestHandler;
 };
-router.post("/google", cors(corsOptions),validateRequest(googleLoginSchema), bindHandler(authController, "googleLogin"));
+
+router.post("/google", validateRequest(googleLoginSchema), bindHandler(authController, "googleLogin"));
 router.post("/register", validateRequest(registerSchema), bindHandler(authController, "register"));
 router.post("/login", validateRequest(emailPasswordSchema), bindHandler(authController, "login"));
 router.post("/verify", authGuard, bindHandler(authController, "authenticate"));

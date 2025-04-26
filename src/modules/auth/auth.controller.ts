@@ -65,17 +65,17 @@ export class AuthController {
     try {
       const token = req.headers.authorization?.split(' ')[1];
       if (!token) {
-        return res.status(401).json({ message: 'Unauthorized - No token provided' }); // Keep early returns
+        return res.status(401).json({ message: 'Unauthorized - No token provided' });
       }
       const user = await authService.verifyToken(token);
       if (user) {
         (req as any).user = user;
         res.status(200).json(user);
       } else {
-        return res.status(401).json({ message: 'Unauthorized - Invalid token' }); // Keep early returns
+        return res.status(401).json({ message: 'Unauthorized - Invalid token' });
       }
     } catch (error: any) {
-      return res.status(401).json({ message: 'Unauthorized - Invalid token' }); // Keep early returns
+      return res.status(401).json({ message: 'Unauthorized - Invalid token' });
     }
   }
 }

@@ -26,7 +26,7 @@ export const ENV = {
   PORT: Number(validatedEnv.PORT),
   NODE_ENV: isProduction ? "production" : "development",
 };
-const originUrl = ENV.NODE_ENV === "development" ?"https://candleaf-front.vercel.app": "http://localhost:5173"
+const originUrl = ENV.NODE_ENV === "development" ? "https://candleaf-front.vercel.app": "http://localhost:5173"
 
 export const corsOptions = {
   origin: originUrl,
