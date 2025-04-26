@@ -1,21 +1,40 @@
-import { Schema, model, Document } from "mongoose";
+import { Schema, model } from 'mongoose';
 
-export interface IUser extends Document {
+export interface IUser {
   name: string;
   email: string;
-  profileImage?: string;
-  role: "user" | "admin";
-  createdAt: Date;
+  password?: string | null;
+  avatar?: string | null;
+  role: 'user' | 'admin';
+  provider: 'google' | 'local';
+  email_verified_at?: string | null;
+  createdAt?: Date;
+  updatedAt?: Date;
+  resetToken?: string | null;
+  resetTokenExp?: Date | null;
 }
+const formatILTime = (date: Date) =>
+  new Date(date).toLocaleString('he-IL', {
+    timeZone: 'Asia/Jerusalem',
+  });
 
-const UserSchema = new Schema<IUser>(
+const userSchema = new Schema<IUser>(
   {
     name: { type: String, required: true },
     email: { type: String, required: true, unique: true },
-    profileImage: { type: String, required: false },
-    role: { type: String, enum: ["user", "admin"], default: "user" },
+    avatar: { type: String },
+    role: { type: String, enum: ['user', 'admin'], default: 'user' },
   },
-  { timestamps: true }
+  {
+    timestamps: true,
+    toJSON: {
+      transform(_, doc) {
+        if (doc.createdAt) doc.createdAt = formatILTime(doc.createdAt as any);
+        if (doc.updatedAt) doc.updatedAt = formatILTime(doc.updatedAt as any);
+        return doc;
+      },
+    },
+  }
 );
 
-export default model<IUser>("User", UserSchema);
+export const UserModel = model<IUser>('User', userSchema);

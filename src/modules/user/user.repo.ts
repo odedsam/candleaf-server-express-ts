@@ -1,4 +1,4 @@
-import UserModel, { IUser } from "./user.model";
+import { IUser, UserModel } from "./user.model";
 
 export class UserRepository {
   async create(userData: Partial<IUser>) {
@@ -10,7 +10,7 @@ export class UserRepository {
   }
 
   async findByEmail(email: string) {
-    return await UserModel.findOne({ email });
+    return await UserModel.findOne({ email }).exec();
   }
 
   async update(userId: string, updateData: Partial<IUser>) {

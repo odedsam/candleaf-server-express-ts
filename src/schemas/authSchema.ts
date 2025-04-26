@@ -16,3 +16,14 @@ export const googleAuthSchema = z.object({
   email: z.string().email("Invalid email format"),
   profileImage: z.string().url("Invalid URL format").optional(),
 });
+
+
+
+export const googleLoginSchema = z.object({
+  token: z.string().min(1, "Missing token"),
+});
+
+export const emailPasswordSchema = z.object({
+  email: z.string().email(),
+  password: z.string().min(6),
+});

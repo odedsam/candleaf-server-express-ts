@@ -9,6 +9,8 @@ import authRoutes from "../modules/auth/auth.routes";
 const router = Router();
 
 router.use("/auth", authRoutes);
+
+// router.use("/user", userRoutes);
 // router.use("/users", userRoutes);
 // router.use("/cart", cartRoutes);
 // router.use("/orders", orderRoutes);
@@ -20,7 +22,7 @@ export default router;
 
 
 
-// new routes/auth.routes.ts : 
+// new routes/auth.routes.ts :
 // import { Router } from 'express'
 // import { loginWithGoogle, verifyToken, logout, loginWithPassword, registerWithPassword } from '../controllers/auth.controller'
 

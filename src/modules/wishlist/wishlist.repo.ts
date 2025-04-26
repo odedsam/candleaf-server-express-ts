@@ -16,4 +16,3 @@ export class WishlistRepository {
     return await WishlistModel.exists({ userId, productId });
   }
 }
-// as

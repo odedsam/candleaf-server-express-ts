@@ -1,8 +1,14 @@
 import dotenv from "dotenv";
+import { envSchema } from "../schemas/envSchema";
 
-dotenv.config();
+const isProduction = process.env.NODE_ENV === "production";
 
-const requiredEnvVars = ["PORT","MONGO_URI", "SESSION_SECRET", "JWT_LIFETIME", "GOOGLE_CLIENT_ID", "GOOGLE_SECRET_ID"];
+const envFile = isProduction ? ".env.production" : ".env";
+dotenv.config({ path: envFile });
+
+const validatedEnv = envSchema.parse(process.env);
+
+const requiredEnvVars = ["PORT", "MONGO_URI", "JWT_SECRET", "SESSION_SECRET", "GOOGLE_CLIENT_ID", "GOOGLE_SECRET_ID"];
 
 requiredEnvVars.forEach((varName) => {
   if (!process.env[varName]) {
@@ -12,11 +18,18 @@ requiredEnvVars.forEach((varName) => {
 });
 
 export const ENV = {
-  MONGO_URI: process.env.MONGO_URI as string,
-  JWT_SECRET: process.env.JWT_SECRET as string,
-  JWT_LIFETIME: process.env.JWT_LIFETIME as string,
-  SESSION_SECRET: process.env.SESSION_SECRET as string,
-  GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID as string,
-  GOOGLE_SECRET_ID: process.env.GOOGLE_SECRET_ID as string,
-  PORT: process.env.PORT ? Number(process.env.PORT) : 5002,
+  MONGO_URI: validatedEnv.MONGO_URI,
+  JWT_SECRET: validatedEnv.JWT_SECRET,
+  SESSION_SECRET: validatedEnv.SESSION_SECRET,
+  GOOGLE_CLIENT_ID: validatedEnv.GOOGLE_CLIENT_ID,
+  GOOGLE_SECRET_ID: validatedEnv.GOOGLE_SECRET_ID,
+  PORT: Number(validatedEnv.PORT),
+  NODE_ENV: isProduction ? "production" : "development",
+};
+const originUrl = ENV.NODE_ENV === "development" ? "http://localhost:5173" : "https://candleaf-front.vercel.app/";
+
+export const corsOptions = {
+  origin: originUrl,
+  methods: "GET,POST,PUT,DELETE",
+  credentials: true,
 };
