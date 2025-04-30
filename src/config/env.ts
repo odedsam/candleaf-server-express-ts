@@ -39,8 +39,7 @@ export const ENV = {
 
 export const corsOptions = {
   origin: 'https://candleaf-front.vercel.app',
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  allowedHeaders: ['Content-Type', 'Authorization','Access'],
-  credentials:true,
-  optionsSuccessStatus: 204,
+  methods:'GET,HEAD,PUT,PATCH,POST,DELETE',
+  credentials: true,
+  allowedHeaders: 'Content-Type, Authorization',
 };
