@@ -1,4 +1,4 @@
-import { Router } from "express";
+import {  Router } from "express";
 import authRoutes from "../modules/auth/auth.routes";
 // import userRoutes from "../modules/user/user.routes";
 // import cartRoutes from "../modules/cart/cart.routes";
@@ -8,7 +8,10 @@ import authRoutes from "../modules/auth/auth.routes";
 
 const router = Router();
 
+
+
 router.use("/auth", authRoutes);
+
 
 // router.use("/user", userRoutes);
 // router.use("/users", userRoutes);ac
@@ -18,9 +21,6 @@ router.use("/auth", authRoutes);
 // router.use("/wishlist", wishlistRoutes);
 
 export default router;
-
-
-
 
 // new routes/auth.routes.ts :
 // import { Router } from 'express'
