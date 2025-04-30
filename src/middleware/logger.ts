@@ -1,18 +1,6 @@
-import pino from 'pino';
-import pinoHttp from 'pino-http';
-import fs from 'fs';
-import path from 'path';
+import { Request,Response,NextFunction } from "express";
 
-const isDevelopment = process.env.NODE_ENV !== 'production';
-
-const logFile = fs.createWriteStream(path.join(__dirname, '../../logs/app.log'), { flags: 'a' });
-
-const logger = pino(
-  {
-    level: process.env.LOG_LEVEL || 'info',
-  },
-  isDevelopment ? pino.destination({ dest: 1, minLength: 128, sync: false }) : logFile
-);
-
-const httpLogger = pinoHttp(logger);
-export { logger, httpLogger };
+export const logger =((req:Request, _res:Response, next:NextFunction) => {
+    console.log(`[${new Date().toISOString()}] ${req.method} ${req.url}`);
+    next();
+  });
