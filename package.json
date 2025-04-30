@@ -4,12 +4,12 @@
   "description": "",
   "main": "dist/index.js",
   "scripts": {
-    "build": "pnpm run tsc",
+    "clean": "rimraf ./dist",
+    "build": "pnpm run clean && pnpm run tsc",
     "tsc": "tsc -p tsconfig.json",
     "start": "node dist/index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon --ext ts --exec ts-node -r tsconfig-paths/register src/index.ts",
-    "clean": "rm -rf dist",
     "lint": "eslint --config ./eslint.config.ts --fix .",
     "lint:file": "eslint --config ./eslint.config.ts --fix"
   },
@@ -50,6 +50,7 @@
     "jiti": "^2.4.2",
     "nodemon": "^3.1.9",
     "prettier": "^3.5.1",
+    "rimraf": "^6.0.1",
     "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.2.0",
     "typescript": "^5.7.3"
