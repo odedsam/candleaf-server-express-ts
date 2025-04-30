@@ -21,7 +21,7 @@ const bindHandler = (controller: any, method: string): RequestHandler => {
 
 
 const handleOptions: RequestHandler = (_req, res) => {
-  res.setHeader('Access-Control-Allow-Origin', 'https://candleaf-front.vercel.app');
+  res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
   res.sendStatus(204);
