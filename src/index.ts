@@ -1,10 +1,10 @@
+import { corsOptions, ENV } from "./config/env";
+import { connectDB, configureSession } from "./config/db";
+import { logger } from "./middleware/logger";
 import express from "express";
 import cookieParser from "cookie-parser";
 import routes from "./routes";
 import cors from "cors";
-import { corsOptions, ENV } from "./config/env";
-import { connectDB, configureSession } from "./config/db";
-import { logger } from "./middleware/logger";
 
 const app = express();
 app.use(cookieParser());
