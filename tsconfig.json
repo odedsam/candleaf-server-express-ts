@@ -19,6 +19,14 @@
     "noEmit": false,
     "sourceMap": true,
 
+    "typeRoots": [
+      "./node_modules/@types"
+    ],
+    "types": [
+      "node",
+      "express"
+    ],
+
     "forceConsistentCasingInFileNames": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,

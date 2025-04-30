@@ -38,6 +38,7 @@ export class AuthController {
        if(!googleUser){
         res.status(401).json({message: "Invalid Google Token "});
        }
+       res.setHeader('Access-Control-Allow-Origin', 'https://candleaf-front.vercel.app')
       res.status(200).json(googleUser);
     } catch (error: any) {
       console.error('Google login error:', error);
