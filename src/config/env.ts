@@ -26,16 +26,17 @@ export const ENV = {
   PORT: Number(validatedEnv.PORT),
   NODE_ENV: isProduction ? "production" : "development",
 };
-// const originUrl = ENV.NODE_ENV === "development" ? "http://localhost:5173": 'https://candleaf-front.vercel.app';
-const vercelDev = 'http://localhost:3000'
-const vercelProd = 'https://candleaf-front.vercel.app'
-const dev = 'http://localhost:5173'
-const origins = [vercelProd,vercelDev,dev]
+
+const vercelDev = 'http://localhost:3000';
+const vercelProd = 'https://candleaf-front.vercel.app';
+const dev = 'http://localhost:5173';
+const origins = [vercelProd,vercelDev,dev];
 
 
 export const corsOptions = {
   origin: origins,
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization', 'Accept'],
+  credentials:true,
   optionsSuccessStatus: 204,
 };
