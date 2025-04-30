@@ -30,7 +30,11 @@ export const ENV = {
 const vercelDev = 'http://localhost:3000';
 const vercelProd = 'https://candleaf-front.vercel.app';
 const dev = 'http://localhost:5173';
-const origins = [vercelProd,vercelDev,dev];
+
+const origins = process.env.NODE_ENV === 'production'
+  ? [vercelProd]
+  : [vercelProd, vercelDev, dev];
+
 
 
 export const corsOptions = {

@@ -1,4 +1,4 @@
-import { Router, RequestHandler } from "express";
+import { RequestHandler, Router } from "express";
 import { AuthController } from "./auth.controller";
 import { authGuard } from "../../middleware/authGuard";
 import { emailPasswordSchema, googleLoginSchema } from "../../schemas/authSchema";
@@ -7,9 +7,14 @@ import { registerSchema } from "../../schemas/userSchema";
 
 const router = Router();
 const authController = new AuthController();
-
 const bindHandler = (controller: any, method: string): RequestHandler => {
-  return controller[method].bind(controller) as RequestHandler;
+  return async (req, res, next) => {
+    try {
+      await controller[method](req, res);
+    } catch (error) {
+      next(error);
+    }
+  };
 };
 
 router.post("/google", validateRequest(googleLoginSchema), bindHandler(authController, "googleLogin"));
@@ -19,4 +24,4 @@ router.post("/verify", authGuard, bindHandler(authController, "authenticate"));
 router.post("/logout", authGuard, bindHandler(authController, "logout"));
 router.get("/authenticate", bindHandler(authController, "authenticate"));
 
-export default router;
+export default router
