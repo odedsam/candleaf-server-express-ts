@@ -8,8 +8,8 @@ import cors from "cors";
 
 const app = express();
 app.use(cookieParser());
-app.use(cors(corsOptions));
 app.use(express.json());
+app.use(cors(corsOptions));
 
 app.use("/api", routes);
 configureSession(app);
