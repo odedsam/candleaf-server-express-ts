@@ -17,6 +17,8 @@
   "author": "Oded",
   "license": "ISC",
   "dependencies": {
+    "@logtail/node": "^0.5.4",
+    "@logtail/winston": "^0.5.4",
     "axios": "^1.7.9",
     "bcryptjs": "^3.0.2",
     "connect-mongo": "^5.1.0",

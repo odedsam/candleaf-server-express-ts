@@ -7,4 +7,6 @@ export const envSchema = z.object({
   JWT_SECRET: z.string().min(1, "JWT_SECRET is required"),
   GOOGLE_CLIENT_ID: z.string().min(1, "GOOGLE_CLIENT_ID is required"),
   GOOGLE_SECRET_ID: z.string().min(1, "GOOGLE_SECRET_ID is required"),
+  LOGTAIL_TOKEN: z.string().min(1, "LOGTAIL_TOKEN is required"),
+  LOGTAIL_HOST: z.string().min(1, "LOGTAIL_HOST is required"),
 });
