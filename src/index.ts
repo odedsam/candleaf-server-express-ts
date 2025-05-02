@@ -1,6 +1,6 @@
 import { corsOptions, ENV } from "./config/env";
 import { connectDB, configureSession } from "./config/db";
-import { logHttpError, logRequest, logUnhandledError } from "./middleware/logger";
+import { httpLogger} from "./middleware/logger";
 import express from "express";
 import cookieParser from "cookie-parser";
 import routes from "./routes";
@@ -12,13 +12,12 @@ app.use(cookieParser());
 app.use(express.json());
 app.use(cors(corsOptions));
 
-app.use(logRequest);
+app.use(httpLogger);
 
 app.use("/api", routes);
 configureSession(app);
 
-app.use(logHttpError);
-app.use(logUnhandledError);
+
 
 connectDB()
   .then(() => {

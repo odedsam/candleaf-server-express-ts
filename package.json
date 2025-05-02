@@ -17,8 +17,6 @@
   "author": "Oded",
   "license": "ISC",
   "dependencies": {
-    "@logtail/node": "^0.5.4",
-    "@logtail/winston": "^0.5.4",
     "axios": "^1.7.9",
     "bcryptjs": "^3.0.2",
     "connect-mongo": "^5.1.0",
@@ -32,6 +30,7 @@
     "mongoose": "^8.12.1",
     "nodemailer": "^6.10.0",
     "pino": "^9.6.0",
+    "pino-http": "^10.4.0",
     "pino-pretty": "^13.0.0",
     "stripe": "^17.7.0",
     "zod": "^3.24.1"
@@ -58,8 +57,5 @@
     "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.2.0",
     "typescript": "^5.7.3"
-  },
-  "overrides": {
-  "@colors/colors": "1.6.0"
-}
+  }
 }

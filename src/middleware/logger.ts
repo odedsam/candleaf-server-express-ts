@@ -1,23 +1,23 @@
-import { Request, Response, NextFunction } from "express";
-import logger from "../config/logger";
+import pino from 'pino';
+import pinoHttp from 'pino-http';
+import fs from 'fs';
+import path from 'path';
 
-export const logRequest = (req: Request, _res: Response, next: NextFunction): void => {
-  logger.info(`Incoming request: ${req.method} ${req.originalUrl}`);
-  next();
-};
+const logDir = path.join(__dirname, '../logs');
+if (!fs.existsSync(logDir)) {
+  fs.mkdirSync(logDir);
+}
 
-export const logHttpError = (err: Error, req: Request, res: Response, next: NextFunction): void => {
-  if (res.statusCode >= 400) {
-    logger.error(`HTTP Error: ${res.statusCode} - ${req.method} ${req.originalUrl}`, {
-      error: err.message,
-      stack: err.stack,
-    });
-  }
-  next(err);
-};
+const logger = pino(
+  {
+    level: process.env.NODE_ENV === 'production' ? 'info' : 'debug',
 
+  },
+  fs.createWriteStream(path.join(logDir, 'app.log'), { flags: 'a' })
+);
 
-export const logUnhandledError = (err: Error, _req: Request, res: Response, _next: NextFunction): void => {
-  logger.error("Unhandled exception occurred", { error: err.message, stack: err.stack });
-  res.status(500).send("Something went wrong!");
-};
+const httpLogger = pinoHttp({
+  logger,
+});
+
+export { logger, httpLogger };

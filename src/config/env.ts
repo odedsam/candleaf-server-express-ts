@@ -8,7 +8,7 @@ dotenv.config({ path: envFile });
 
 const validatedEnv = envSchema.parse(process.env);
 
-const requiredEnvVars = ["PORT", "MONGO_URI", "JWT_SECRET","LOGTAIL_TOKEN","LOGTAIL_HOST", "SESSION_SECRET", "GOOGLE_CLIENT_ID", "GOOGLE_SECRET_ID"];
+const requiredEnvVars = ["PORT", "MONGO_URI", "JWT_SECRET", "SESSION_SECRET", "GOOGLE_CLIENT_ID", "GOOGLE_SECRET_ID"];
 
 requiredEnvVars.forEach((varName) => {
   if (!process.env[varName]) {
@@ -23,8 +23,6 @@ export const ENV = {
   SESSION_SECRET: validatedEnv.SESSION_SECRET,
   GOOGLE_CLIENT_ID: validatedEnv.GOOGLE_CLIENT_ID,
   GOOGLE_SECRET_ID: validatedEnv.GOOGLE_SECRET_ID,
-  LOGTAIL_TOKEN: validatedEnv.LOGTAIL_TOKEN,
-  LOGTAIL_HOST: validatedEnv.LOGTAIL_HOST,
   PORT: Number(validatedEnv.PORT),
   NODE_ENV: isProduction ? "production" : "development",
 };
