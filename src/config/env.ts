@@ -29,9 +29,7 @@ export const ENV = {
   NODE_ENV: isProduction ? "production" : "development",
 };
 
-// const vercelDev = 'http://localhost:3000';
-// const vercelProd = 'https://candleaf-front.vercel.app';
-// const dev = 'http://localhost:5173';
+
 
 // const origins = process.env.NODE_ENV === 'production'
 //   ? [vercelProd]
