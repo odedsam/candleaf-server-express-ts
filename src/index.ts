@@ -21,7 +21,9 @@ configureSession(app);
 
 connectDB()
   .then(() => {
-    app.listen(ENV.PORT, () => console.log(` Server running on port ${ENV.PORT}`));
+    console.log("Railway Port:", ENV.PORT)
+    const portToListen = ENV.PORT;
+    app.listen(portToListen, () => console.log(` Server running on port ${portToListen}`));
   })
   .catch((error) => {
     console.error("Failed to start the server:", error);
