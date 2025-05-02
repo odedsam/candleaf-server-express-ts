@@ -8,7 +8,7 @@ dotenv.config({ path: envFile });
 
 const validatedEnv = envSchema.parse(process.env);
 
-const requiredEnvVars = ["PORT", "MONGO_URI", "JWT_SECRET", "SESSION_SECRET", "GOOGLE_CLIENT_ID", "GOOGLE_SECRET_ID"];
+const requiredEnvVars = ["PORT", "MONGO_URI", "JWT_SECRET","LOGTAIL_TOKEN","LOGTAIL_HOST", "SESSION_SECRET", "GOOGLE_CLIENT_ID", "GOOGLE_SECRET_ID"];
 
 requiredEnvVars.forEach((varName) => {
   if (!process.env[varName]) {
