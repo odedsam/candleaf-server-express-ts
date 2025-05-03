@@ -10,7 +10,9 @@ const app = express();
 
 app.use(cookieParser());
 app.use(express.json());
+
 app.use(cors(corsOptions));
+app.options('*', cors(corsOptions));
 
 app.use(httpLogger);
 
