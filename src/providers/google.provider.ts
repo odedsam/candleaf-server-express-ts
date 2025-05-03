@@ -18,8 +18,10 @@ export const fetchGoogleUser = async (accessToken: string): Promise<GoogleUser |
 
     if (!response.ok) {
       const errorBody = await response.json();
+
       colorError(`Failed to fetch Google user info. Status: ${response.status}`);
       colorError(`Google API Error Details: ${JSON.stringify(errorBody)}`);
+
       throw new Error(`Failed to fetch Google user info. Status: ${response.status}`);
     }
     const data: any = await response.json();

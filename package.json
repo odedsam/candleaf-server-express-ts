@@ -5,8 +5,7 @@
   "main": "dist/index.js",
   "scripts": {
     "clean": "rimraf ./dist",
-    "build": "pnpm run clean && pnpm run tsc",
-    "tsc": "tsc -p tsconfig.json",
+    "build": "pnpm run clean && pnpm tsc -p tsconfig.json",
     "start": "node dist/index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon --ext ts --exec ts-node -r tsconfig-paths/register src/index.ts",

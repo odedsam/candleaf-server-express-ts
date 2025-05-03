@@ -1,5 +1,5 @@
 import { Response, Request } from "express";
-import { getUserCart, addToCart, removeFromCart, syncCart } from "../cart/cart.service";
+import { getUserCart, addToCart, removeFromCart, syncCart } from "./cart.service";
 
 export interface AuthRequest extends Request {
   user?: { id: string; email: string; role?: string };

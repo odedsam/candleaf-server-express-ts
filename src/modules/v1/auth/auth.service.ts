@@ -1,7 +1,7 @@
 import bcrypt from "bcryptjs";
 import { AuthRepository } from "./auth.repo";
-import { createToken, verifyToken } from "../../utils/jwt";
-import { fetchGoogleUser } from "../../providers/google.provider";
+import { createToken, verifyToken } from "../../../utils/jwt";
+import { fetchGoogleUser } from "../../../providers/google.provider";
 import { UserRepository } from "../user/user.repo";
 
 
