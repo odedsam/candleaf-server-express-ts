@@ -1,4 +1,3 @@
-
 import { Schema, model, Types } from 'mongoose';
 import { IUser } from '../user/user.model';
 

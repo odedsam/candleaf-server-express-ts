@@ -1,13 +1,12 @@
-import { Request, Response } from 'express';
-import { AuthService } from './auth.service';
+import { Request, Response } from "express";
+import { AuthService } from "./auth.service";
 
 const authService = new AuthService();
 interface AuthenticateUserRequest {
- user?:{
-  id:string;
- }
+  user?: {
+    id: string;
+  };
 }
-
 
 export class AuthController {
   async register(req: Request, res: Response) {
@@ -26,7 +25,7 @@ export class AuthController {
       const result = await authService.login(email, password);
       res.status(200).json(result);
     } catch (error: any) {
-      res.status(401).json({ message: 'Invalid credentials' });
+      res.status(401).json({ message: "Invalid credentials" });
     }
   }
 
@@ -35,48 +34,47 @@ export class AuthController {
       const { token: accessToken } = req.body;
       const googleUser = await authService.loginWithGoogle(accessToken);
 
-       if(!googleUser){
-        res.status(401).json({message: "Invalid Google Token "});
-       }
-      //  res.setHeader('Access-Control-Allow-Origin', 'https://candleaf-front.vercel.app')
+      if (!googleUser) {
+        res.status(401).json({ message: "Invalid Google Token " });
+      }
       res.status(200).json(googleUser);
     } catch (error: any) {
-      console.error('Google login error:', error);
-      res.status(401).json({ message: 'Google login failed' });
+      console.error("Google login error:", error);
+      res.status(401).json({ message: "Google login failed" });
     }
   }
 
   async logout(req: Request<AuthenticateUserRequest>, res: Response) {
     try {
-      const userId= req.body.user?.id
-      res.clearCookie('token', {
+      const userId = req.body.user?.id;
+      res.clearCookie("token", {
         httpOnly: true,
         secure: true,
-        sameSite: 'strict',
-      })
+        sameSite: "strict",
+      });
       const result = await authService.logout(userId);
 
       res.status(200).json(result);
-    } catch (error:any) {
-      console.error('Logout error:', error);
-      res.status(500).json({ message: 'Logout failed' });
+    } catch (error: any) {
+      console.error("Logout error:", error);
+      res.status(500).json({ message: "Logout failed" });
     }
   }
   async authenticate(req: Request, res: Response) {
     try {
-      const token = req.headers.authorization?.split(' ')[1];
+      const token = req.headers.authorization?.split(" ")[1];
       if (!token) {
-        return res.status(401).json({ message: 'Unauthorized - No token provided' });
+        return res.status(401).json({ message: "Unauthorized - No token provided" });
       }
       const user = await authService.verifyToken(token);
       if (user) {
         (req as any).user = user;
         res.status(200).json(user);
       } else {
-        return res.status(401).json({ message: 'Unauthorized - Invalid token' });
+        return res.status(401).json({ message: "Unauthorized - Invalid token" });
       }
     } catch (error: any) {
-      return res.status(401).json({ message: 'Unauthorized - Invalid token' });
+      return res.status(401).json({ message: "Unauthorized - Invalid token" });
     }
   }
 }

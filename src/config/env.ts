@@ -28,19 +28,6 @@ export const ENV = {
 };
 
 
-
-// const origins = process.env.NODE_ENV === 'production'
-//   ? [vercelProd]
-//   : [vercelProd, vercelDev, dev];
-
-// const inspectUrl = 'https://vercel.com/fragged-ups-projects/candleaf-front/C6DY56c4rwS387M4Q17Apag9hFXz';
-// const stagingUrl ='https://candleaf-front-5hobrpis7-fragged-ups-projects.vercel.app';
-// const devUrl = 'http://localhost:3000';
-// const localDevUrl = 'http://localhost:5001';
-// const productionUrl ='https://candleaf-front.vercel.app';
-
-// const origins = [inspectUrl,stagingUrl,devUrl,localDevUrl,productionUrl]
-
 export const corsOptions = {
   origin:['http://localhost:5173','https://candleaf-front.vercel.app'],
   methods: ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE"],

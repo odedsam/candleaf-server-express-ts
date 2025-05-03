@@ -1,6 +1,6 @@
 import { corsOptions, ENV } from "./config/env";
 import { connectDB, configureSession } from "./config/db";
-import { httpLogger} from "./middleware/logger";
+import { httpLogger } from "./middleware/logger";
 import express from "express";
 import cookieParser from "cookie-parser";
 import routes from "./routes";
