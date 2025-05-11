@@ -14,10 +14,18 @@ export const checkoutController = async (req: Request, res: Response):Promise<an
     }
 
     const fullName = `${shipping.name} ${shipping.lastName}`;
-    const order_id = generateOrderId();
+
+     const products = cartItems.cartItems.map((item: any) => ({
+      title: item.title,
+      image: item.image,
+      price: item.price,
+      quantity: item.quantity,
+      subTotal: item.price * item.quantity,
+    }));
+
 
     const newOrder = await orderRepository.create({
-      order_id,
+     order_id: generateOrderId(),
       email: shipping.email,
       name: fullName,
       city: shipping.city,
@@ -25,27 +33,16 @@ export const checkoutController = async (req: Request, res: Response):Promise<an
       postal_code: shipping.postalCode,
       shipping_note: shipping.address,
       shipping_method: payment.shippingMethod,
-      products: cartItems.cartItems,
+      products,
       sub_total: cartItems.subTotal,
-      status: "pending",
+      status: 'pending',
     });
+
 
     return res.status(201).json({
       success: true,
       message: "Order successfully placed.",
-      order: {
-        order_id: newOrder.order_id,
-        name: newOrder.name,
-        email: newOrder.email,
-        status: newOrder.status,
-        products: newOrder.products,
-        sub_total: newOrder.sub_total,
-        city: shipping.city,
-        country: shipping.country,
-        postal_code: shipping.postalCode,
-        shipping_note: shipping.address,
-        shipping_method: payment.shippingMethod,
-      },
+      userConfirmation:newOrder,
     });
   } catch (err) {
     console.error("Checkout error:", err);
