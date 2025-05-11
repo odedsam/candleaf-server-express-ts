@@ -25,7 +25,7 @@ export const checkoutController = async (req: Request, res: Response):Promise<an
 
 
     const newOrder = await orderRepository.create({
-     order_id: generateOrderId(),
+      order_id: generateOrderId(),
       email: shipping.email,
       name: fullName,
       city: shipping.city,
@@ -38,6 +38,7 @@ export const checkoutController = async (req: Request, res: Response):Promise<an
       status: 'pending',
     });
 
+    console.log(newOrder);
 
     return res.status(201).json({
       success: true,
