@@ -24,6 +24,11 @@ export const authGuard = (req: Request, res: Response, next: NextFunction): void
 
 }
 
+
+
+
+
+
 export const requireAdmin = (req: AuthenticatedRequest, res: Response, next: NextFunction)=> {
   if (!req.user || req.user.role !== 'admin') {
     return res.status(403).send('Forbidden')

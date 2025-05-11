@@ -9,19 +9,19 @@ export const registerSchema = z.object({
     .min(6, "Password must be at least 6 characters")
     .regex(/[A-Z]/, "Password must contain at least one uppercase letter")
     .regex(/[0-9]/, "Password must contain at least one number")
-    .regex(/[\W_]/, "Password must contain at least one special character"),
+    .regex(/[\W_]/, "Password must contain at least one special symbol (e.g., !@#$)"),
   authMethod: z.enum(["local", "google"]),
-  role: z.enum(["user", "admin"]).default("user"),
+  role: z.string().optional().default("user"),
   profileImage: z.string()
     .url("Invalid URL format")
     .nullable()
-    .optional(), 
+    .optional(),
 });
 
 export const loginSchema = z.object({
   email: z.string().email("Invalid email format"),
   password: z.string().min(6, "Password must be at least 6 characters"),
-   
+
 });
 
 

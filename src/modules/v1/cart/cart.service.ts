@@ -21,7 +21,7 @@ export const addToCart = async (userId: string, productId: string, quantity: num
   if (existingItem) {
     existingItem.quantity += quantity;
   } else {
-    cart.items.push({ product: productId, quantity } as any); // ✅ Fix: Explicit cast
+    cart.items.push({ product: productId, quantity } as any);
   }
 
   await cart.save();
@@ -32,7 +32,7 @@ export const removeFromCart = async (userId: string, productId: string) => {
   const cart = await CartModel.findOne({ userId });
   if (!cart) throw new Error("Cart not found");
 
-  cart.items = cart.items.filter((item) => item.product.toString() !== productId) as any; // ✅ Fix: Explicit cast
+  cart.items = cart.items.filter((item) => item.product.toString() !== productId) as any;
 
   await cart.save();
   return cart;

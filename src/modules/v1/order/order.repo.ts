@@ -1,23 +1,30 @@
-// import OrderModel, { IOrder } from "./order.model";
+import Order, { OrderDocument } from "./order.model";
 
-// export class OrderRepository {
-//   async create(orderData: Partial<IOrder>) {
-//     return await OrderModel.create(orderData);
-//   }
+export class OrderRepository {
+  async create(orderData: Partial<OrderDocument>): Promise<OrderDocument> {
+    const order = new Order(orderData);
+    return await order.save();
+  }
 
-//   async findById(orderId: string) {
-//     return await OrderModel.findById(orderId).populate("products.productId");
-//   }
+  async findByOrderId(order_id: string): Promise<OrderDocument | null> {
+    return await Order.findOne({ order_id });
+  }
 
-//   async findByUser(userId: string) {
-//     return await OrderModel.find({ userId }).populate("products.productId");
-//   }
+  async updateStatus(order_id: string, status: OrderDocument["status"]): Promise<OrderDocument | null> {
+    return await Order.findOneAndUpdate(
+      { order_id },
+      { status },
+      { new: true }
+    );
+  }
 
-//   async updateStatus(orderId: string, status: string) {
-//     return await OrderModel.findByIdAndUpdate(orderId, { status }, { new: true });
-//   }
+  async list(): Promise<OrderDocument[]> {
+    return await Order.find().sort({ createdAt: -1 });
+  }
 
-//   async delete(orderId: string) {
-//     return await OrderModel.findByIdAndDelete(orderId);
-//   }
-// }
+  async delete(order_id: string): Promise<void> {
+    await Order.deleteOne({ order_id });
+  }
+}
+
+export const orderRepository = new OrderRepository();

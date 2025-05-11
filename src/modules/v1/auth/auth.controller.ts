@@ -19,16 +19,21 @@ export class AuthController {
     }
   }
 
-  async login(req: Request, res: Response) {
+   async login(req: Request, res: Response) {
     try {
       const { email, password } = req.body;
-      const result = await authService.login(email, password);
-      res.status(200).json(result);
+      const { token, user } = await authService.login(email, password);
+      res.cookie('token', token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'strict',
+        maxAge: 24 * 60 * 60 * 1000,
+      });
+      res.status(200).json({ user });
     } catch (error: any) {
-      res.status(401).json({ message: "Invalid credentials" });
+      res.status(401).json({ message: 'Invalid credentials' });
     }
   }
-
   async googleLogin(req: Request, res: Response) {
     try {
       const { token: accessToken } = req.body;
@@ -43,6 +48,7 @@ export class AuthController {
       res.status(401).json({ message: "Google login failed" });
     }
   }
+
 
   async logout(req: Request<AuthenticateUserRequest>, res: Response) {
     try {

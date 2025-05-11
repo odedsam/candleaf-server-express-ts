@@ -2,7 +2,9 @@ import { AuthRepository } from "./auth.repo";
 import { createToken, verifyToken } from "../../../utils/jwt";
 import { fetchGoogleUser } from "../../../providers/google.provider";
 import { UserRepository } from "../user/user.repo";
+import { UserDocument } from "../../../types";
 import bcrypt from "bcryptjs";
+
 
 const authRepo = new AuthRepository();
 const userRepo = new UserRepository();
@@ -15,15 +17,15 @@ export class AuthService {
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
-    const user = await userRepo.create({ name, email });
-
+    const user = await userRepo.create({ name, email }) as UserDocument;
+    const fetchedUser = await userRepo.findById(user._id);
     await authRepo.create({
       user: user._id,
       provider: "local",
       password: hashedPassword,
     });
 
-    return { user, token: createToken(user._id.toString()) };
+    return { user:fetchedUser, token: createToken(user._id.toString()) };
   }
 
   async login(email: string, password: string) {

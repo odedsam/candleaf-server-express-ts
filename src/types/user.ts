@@ -1,3 +1,5 @@
+import { Document } from 'mongoose';
+
 export interface UserPayload {
   _id: string;
   name: string;
@@ -19,4 +21,10 @@ export interface GoogleUser {
   name: string
   email: string
   avatar?: string
+}
+
+export interface UserDocument extends Document {
+  _id: any;
+  name: string;
+  email: string;
 }
