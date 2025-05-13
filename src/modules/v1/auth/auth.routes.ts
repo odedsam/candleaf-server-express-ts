@@ -24,6 +24,7 @@ router.post("/login", validateRequest(emailPasswordSchema), bindHandler(authCont
 router.post("/verify", authGuard, bindHandler(authController, "authenticate"));
 router.post("/logout", authGuard, bindHandler(authController, "logout"));
 router.get("/authenticate", bindHandler(authController, "authenticate"));
+router.post("/forgot-password", bindHandler(authController, "forgotPassword"));
+router.post("/reset-password", bindHandler(authController, "resetPassword"));
 
-export default router
-
+export default router;

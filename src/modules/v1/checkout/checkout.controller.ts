@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { generateOrderId } from "../../../utils/generateOrderId";
+import { generateOrderId } from "../../../utils/generate";
 import { orderRepository } from "../order/order.repo";
 
 export const checkoutController = async (req: Request, res: Response):Promise<any> => {

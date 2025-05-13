@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "main": "dist/index.js",
+  "keywords": [],
+  "author": "Oded",
+  "license": "ISC",
   "scripts": {
     "clean": "rimraf ./dist",
     "build": "pnpm run clean && tsc -p tsconfig.json",
@@ -12,10 +15,8 @@
     "lint": "eslint --config ./eslint.config.ts --fix .",
     "lint:file": "eslint --config ./eslint.config.ts --fix"
   },
-  "keywords": [],
-  "author": "Oded",
-  "license": "ISC",
   "dependencies": {
+    "@sendgrid/mail": "^8.1.5",
     "axios": "^1.7.9",
     "bcryptjs": "^3.0.2",
     "connect-mongo": "^5.1.0",

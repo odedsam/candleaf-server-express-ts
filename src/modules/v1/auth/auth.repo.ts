@@ -22,8 +22,13 @@ export class AuthRepository {
     return await AuthModel.findOneAndUpdate({ user: userId }, { resetToken, resetTokenExp });
   }
 
+   async update(userId: string, updateData: Partial<IAuth>) {
+      return await AuthModel.findByIdAndUpdate(userId, updateData, { new: true });
+    }
+
   async verifyEmail(userId: string | Types.ObjectId) {
     return await AuthModel.findOneAndUpdate({ user: userId }, { email_verified_at: new Date().toISOString() });
   }
 
 }
+

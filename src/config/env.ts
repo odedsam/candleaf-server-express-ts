@@ -8,7 +8,7 @@ dotenv.config({ path: envFile });
 
 const validatedEnv = envSchema.parse(process.env);
 
-const requiredEnvVars = ["PORT", "MONGO_URI", "JWT_SECRET", "SESSION_SECRET","NODE_ENV", "GOOGLE_CLIENT_ID", "GOOGLE_SECRET_ID"];
+const requiredEnvVars = ["PORT", "MONGO_URI", "JWT_SECRET","JWT_RESET_SECRET", "SESSION_SECRET","NODE_ENV", "GOOGLE_CLIENT_ID", "GOOGLE_SECRET_ID","SUPPORT_EMAIL","SENDGRID_API_KEY"];
 
 requiredEnvVars.forEach((varName) => {
   if (!process.env[varName]) {
@@ -20,9 +20,12 @@ requiredEnvVars.forEach((varName) => {
 export const ENV = {
   MONGO_URI: validatedEnv.MONGO_URI,
   JWT_SECRET: validatedEnv.JWT_SECRET,
+  JWT_RESET_SECRET: validatedEnv.JWT_RESET_SECRET,
   SESSION_SECRET: validatedEnv.SESSION_SECRET,
   GOOGLE_CLIENT_ID: validatedEnv.GOOGLE_CLIENT_ID,
   GOOGLE_SECRET_ID: validatedEnv.GOOGLE_SECRET_ID,
+  SUPPORT_EMAIL:validatedEnv.SUPPORT_EMAIL,
+  SENDGRID_API_KEY: validatedEnv.SENDGRID_API_KEY,
   PORT: Number(validatedEnv.PORT),
   NODE_ENV: isProduction ? "production" : "development",
 };

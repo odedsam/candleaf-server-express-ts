@@ -22,3 +22,20 @@ export const verifyToken = (token: string): Promise<UserPayload | null> => {
     });
   });
 };
+
+
+export const createResetToken = (userId: string): string => {
+  const secret = ENV.JWT_RESET_SECRET as string;
+  const payload: UserPayload = { userId };
+  const options: SignOptions = { expiresIn: "1h" };
+  return jwt.sign(payload, secret, options);
+};
+
+export const verifyResetToken = (token: string): Promise<UserPayload | null> => {
+  return new Promise((resolve) => {
+    jwt.verify(token, ENV.JWT_RESET_SECRET as string, (err, decoded) => {
+      if (err) return resolve(null);
+      resolve(decoded as UserPayload);
+    });
+  });
+};

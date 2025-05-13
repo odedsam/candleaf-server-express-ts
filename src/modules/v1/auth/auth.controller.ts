@@ -19,19 +19,19 @@ export class AuthController {
     }
   }
 
-   async login(req: Request, res: Response) {
+  async login(req: Request, res: Response) {
     try {
       const { email, password } = req.body;
       const { token, user } = await authService.login(email, password);
-      res.cookie('token', token, {
+      res.cookie("token", token, {
         httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
-        sameSite: 'strict',
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "strict",
         maxAge: 24 * 60 * 60 * 1000,
       });
       res.status(200).json({ user });
     } catch (error: any) {
-      res.status(401).json({ message: 'Invalid credentials' });
+      res.status(401).json({ message: "Invalid credentials" });
     }
   }
   async googleLogin(req: Request, res: Response) {
@@ -48,7 +48,6 @@ export class AuthController {
       res.status(401).json({ message: "Google login failed" });
     }
   }
-
 
   async logout(req: Request<AuthenticateUserRequest>, res: Response) {
     try {
@@ -81,6 +80,32 @@ export class AuthController {
       }
     } catch (error: any) {
       return res.status(401).json({ message: "Unauthorized - Invalid token" });
+    }
+  }
+
+  async forgotPassword(req: Request, res: Response): Promise<void> {
+    try {
+      const { email } = req.body;
+      await authService.forgotPassword(email);
+      res.status(200).json({
+        message: "If an account with that email exists, a reset link has been sent.",
+      });
+    } catch (error: any) {
+      console.error("Forgot password error:", error);
+      res.status(400).json({ message: "Error sending reset link" });
+    }
+  }
+
+  async resetPassword(req: Request, res: Response): Promise<void> {
+    try {
+      const { token, newPassword } = req.body;
+      await authService.resetPassword(token, newPassword);
+      res.status(200).json({
+        message: "Password has been successfully reset.",
+      });
+    } catch (error: any) {
+      console.error("Reset password error:", error);
+      res.status(400).json({ message: "Invalid or expired reset token" });
     }
   }
 }
