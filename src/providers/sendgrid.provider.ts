@@ -53,4 +53,23 @@ export const sendResetPasswordConfirmationEmail = async (email: string): Promise
   await sendEmail(emailOptions);
 };
 
+export const sendContactMessageConfirmation = async (
+  userEmail: string,
+  userName: string
+): Promise<void> => {
+  const emailOptions: EmailOptions = {
+    to: userEmail,
+    from: supportEmail,
+    subject: 'We received your message',
+    html: `
+      <p>Hi ${userName},</p>
+      <p>Thank you for reaching out. We've received your message and will get back to you soon.</p>
+      <p>If you have any urgent concerns, feel free to reply to this email.</p>
+      <p>– The Support Team</p>
+    `,
+  };
+
+  await sendEmail(emailOptions);
+};
+
 export default mail;
