@@ -23,8 +23,8 @@ export class AuthController {
     try {
       const { email, password } = req.body;
       const { token, user } = await authService.login(email, password);
-      res.cookie("token", token, {
-        httpOnly: true,
+      res.cookie("candleaf_token", token, {
+        httpOnly: process.env.NODE_ENV === "production",
         secure: process.env.NODE_ENV === "production",
         sameSite: "strict",
         maxAge: 24 * 60 * 60 * 1000,

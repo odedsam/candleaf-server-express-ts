@@ -25,9 +25,7 @@ export const configureSession = (app: Express) => {
       store: MongoStore.create({
         mongoUrl: ENV.MONGO_URI,
         collectionName: "sessions",
-        mongoOptions: {
-          serverSelectionTimeoutMS: 5000,
-        },
+        mongoOptions: { serverSelectionTimeoutMS: 5000,},
       }),
       cookie: {
         maxAge: 24 * 60 * 60 * 1000,
