@@ -2,110 +2,107 @@ import { Request, Response } from "express";
 import { AuthService } from "./auth.service";
 
 const authService = new AuthService();
-interface AuthenticateUserRequest {
-  user?: {
-    id: string;
-  };
-}
 
 export class AuthController {
   async register(req: Request, res: Response) {
     try {
       const { name, email, password } = req.body;
-      const result = await authService.register(name, email, password);
-      res.status(201).json(result);
-    } catch (error: any) {
-      res.status(400).json({ message: error.message });
+      const { user, token } = await authService.register(name, email, password);
+
+      req.session.token = token;
+      req.session.user = user ? { _id: user._id.toString(), name: user.name, email: user.email } : undefined;
+
+      res.status(201).json({ user: req.session.user, token });
+    } catch (err: any) {
+      res.status(400).json({ message: err.message || "Registration failed" });
     }
   }
 
   async login(req: Request, res: Response) {
     try {
       const { email, password } = req.body;
-      const { token, user } = await authService.login(email, password);
-      res.cookie("candleaf_token", token, {
-        httpOnly: process.env.NODE_ENV === "production",
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "strict",
-        maxAge: 24 * 60 * 60 * 1000,
-      });
-      res.status(200).json({ user });
-    } catch (error: any) {
-      res.status(401).json({ message: "Invalid credentials" });
+      const { user, token } = await authService.login(email, password);
+
+      req.session.token = token;
+      req.session.user = user ? { _id: user._id.toString(), name: user.name, email: user.email } : undefined;
+
+      res.status(200).json({ user: req.session.user, token });
+    } catch (err: any) {
+      res.status(401).json({ message: err.message || "Login failed" });
     }
   }
-  async googleLogin(req: Request, res: Response) {
-    try {
-      const { token: accessToken } = req.body;
-      const googleUser = await authService.loginWithGoogle(accessToken);
 
-      if (!googleUser) {
-        res.status(401).json({ message: "Invalid Google Token " });
+  async loginWithGoogle(req: Request, res: Response) {
+    try {
+      const { accessToken } = req.body;
+      const { user, token } = await authService.loginWithGoogle(accessToken);
+
+      req.session.token = token;
+      req.session.user = user ? { _id: user._id.toString(), name: user.name, email: user.email } : undefined;
+
+      res.status(200).json({ user: req.session.user, token });
+    } catch (err: any) {
+      res.status(401).json({ message: err.message || "Google login failed" });
+    }
+  }
+
+  async logout(req: Request, res: Response) {
+    try {
+      const userId = req.session.user?._id;
+
+      req.session.token = undefined;
+      req.session.user = undefined;
+
+      if (userId) {
+        await authService.logout(userId);
       }
-      res.status(200).json(googleUser);
-    } catch (error: any) {
-      console.error("Google login error:", error);
-      res.status(401).json({ message: "Google login failed" });
+
+      res.status(200).json({ message: "Logged out successfully" });
+    } catch (err: any) {
+      res.status(400).json({ message: err.message || "Logout failed" });
     }
   }
 
-  async logout(req: Request<AuthenticateUserRequest>, res: Response) {
-    try {
-      const userId = req.body.user?.id;
-      res.clearCookie("token", {
-        httpOnly: true,
-        secure: true,
-        sameSite: "strict",
-      });
-      const result = await authService.logout(userId);
-
-      res.status(200).json(result);
-    } catch (error: any) {
-      console.error("Logout error:", error);
-      res.status(500).json({ message: "Logout failed" });
-    }
-  }
-  async authenticate(req: Request, res: Response) {
+  async verifyToken(req: Request, res: Response) {
     try {
       const token = req.headers.authorization?.split(" ")[1];
       if (!token) {
-        return res.status(401).json({ message: "Unauthorized - No token provided" });
+        return res.status(401).json({ message: "Token missing" });
       }
       const user = await authService.verifyToken(token);
-      if (user) {
-        (req as any).user = user;
-        res.status(200).json(user);
-      } else {
-        return res.status(401).json({ message: "Unauthorized - Invalid token" });
+      if (!user) {
+        return res.status(401).json({ message: "Invalid token" });
       }
-    } catch (error: any) {
-      return res.status(401).json({ message: "Unauthorized - Invalid token" });
+
+      res.status(200).json({
+        user: {
+          _id: user._id.toString(),
+          name: user.name,
+          email: user.email,
+        },
+      });
+    } catch (err: any) {
+      res.status(401).json({ message: err.message || "Token verification failed" });
     }
   }
 
-  async forgotPassword(req: Request, res: Response): Promise<void> {
+  async forgotPassword(req: Request, res: Response) {
     try {
       const { email } = req.body;
       await authService.forgotPassword(email);
-      res.status(200).json({
-        message: "If an account with that email exists, a reset link has been sent.",
-      });
-    } catch (error: any) {
-      console.error("Forgot password error:", error);
-      res.status(400).json({ message: "Error sending reset link" });
+      res.status(200).json({ message: "Password reset email sent if user exists" });
+    } catch (err: any) {
+      res.status(400).json({ message: err.message || "Failed to send reset email" });
     }
   }
 
-  async resetPassword(req: Request, res: Response): Promise<void> {
+  async resetPassword(req: Request, res: Response) {
     try {
       const { token, newPassword } = req.body;
       await authService.resetPassword(token, newPassword);
-      res.status(200).json({
-        message: "Password has been successfully reset.",
-      });
-    } catch (error: any) {
-      console.error("Reset password error:", error);
-      res.status(400).json({ message: "Invalid or expired reset token" });
+      res.status(200).json({ message: "Password reset successfully" });
+    } catch (err: any) {
+      res.status(400).json({ message: err.message || "Password reset failed" });
     }
   }
 }

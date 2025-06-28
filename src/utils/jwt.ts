@@ -23,7 +23,6 @@ export const verifyToken = (token: string): Promise<UserPayload | null> => {
   });
 };
 
-
 export const createResetToken = (userId: string): string => {
   const secret = ENV.JWT_RESET_SECRET as string;
   const payload: UserPayload = { userId };

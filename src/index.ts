@@ -14,10 +14,10 @@ app.use(express.json());
 app.use(cors(corsOptions));
 app.options('*', cors(corsOptions));
 
-app.use(httpLogger);
+configureSession(app);
 
 app.use("/api", routes);
-configureSession(app);
+app.use(httpLogger);
 
 
 
