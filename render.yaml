@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: candleaf-back
+    name: candleaf-server-express-ts
     env: node
     region: oregon
     plan: free
