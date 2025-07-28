@@ -1,18 +1,14 @@
 services:
   - type: web
-    name: mycandleaf-server-express-ts
+    name: candleaf-back
     env: node
     region: oregon
     plan: free
-    buildCommand: pnpm install && pnpm run build
-    startCommand: pnpm start
+    buildCommand: npm install -g pnpm && pnpm install && pnpm run build
+    startCommand: node dist/index.js
     port: 8080
-
     envVars:
       - key: NODE_ENV
         value: production
-
     autoDeploy: true
-
-
     healthCheckPath: /api/v1/health
