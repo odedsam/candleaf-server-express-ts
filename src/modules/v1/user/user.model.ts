@@ -12,8 +12,10 @@ export interface IUser {
   updatedAt?: Date;
   resetToken?: string | null;
   resetTokenExp?: Date | null;
+  createdAtFormatted?: string;
+  updatedAtFormatted?: string;
 }
-const formatILTime = (date: Date) =>
+const formatILTime = (date: any) =>
   new Date(date).toLocaleString('he-IL', {
     timeZone: 'Asia/Jerusalem',
   });
@@ -28,10 +30,10 @@ const userSchema = new Schema<IUser>(
   {
     timestamps: true,
     toJSON: {
-      transform(_, doc) {
-        if (doc.createdAt) doc.createdAt = formatILTime(doc.createdAt as any);
-        if (doc.updatedAt) doc.updatedAt = formatILTime(doc.updatedAt as any);
-        return doc;
+      transform(_, obj) {
+        if (obj.createdAt) obj.createdAtFormatted = formatILTime(obj.createdAt);
+        if (obj.updatedAt) obj.updatedAtFormatted = formatILTime(obj.updatedAt);
+        return obj;
       },
     },
   }
