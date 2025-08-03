@@ -4,35 +4,29 @@ import mongoose from "mongoose";
 import session from "express-session";
 import MongoStore from "connect-mongo";
 
-
-
-
-export const connectDB = async () => {
+export const connectDB = async (): Promise<void> => {
   try {
-    await mongoose.connect(ENV.MONGO_URI!, {
-      serverSelectionTimeoutMS: 60000,
-      tls:true,
+    await mongoose.connect(ENV.MONGO_URI, {
+      serverSelectionTimeoutMS:20000,
     });
-    console.log("Connected To MongoDB");
-  } catch (err: any) {
-    console.error("MongoDB Connection Error:", err);
+    console.log("Connected to MongoDB");
+  } catch (err) {
+    console.error("❌ MongoDB Connection Error:", err);
     process.exit(1);
   }
 };
 
-export const configureSession = (app: Express) => {
+export const configureSession = (app: Express): void => {
   app.use(
     session({
       secret: ENV.SESSION_SECRET,
       resave: false,
       saveUninitialized: false,
       store: MongoStore.create({
-        mongoUrl: ENV.MONGO_URI!,
+        mongoUrl: ENV.MONGO_URI,
         collectionName: "sessions",
         mongoOptions: {
-          serverSelectionTimeoutMS: 60000,
-        tls:true,
-
+          serverSelectionTimeoutMS: 20000,
         },
       }),
       cookie: {

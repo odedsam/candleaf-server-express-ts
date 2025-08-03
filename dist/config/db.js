@@ -12,7 +12,7 @@ const connectDB = async () => {
     try {
         await mongoose_1.default.connect(env_1.ENV.MONGO_URI, {
             serverSelectionTimeoutMS: 60000,
-            tls: true,
+            ssl: true,
         });
         console.log("Connected To MongoDB");
     }
@@ -32,7 +32,7 @@ const configureSession = (app) => {
             collectionName: "sessions",
             mongoOptions: {
                 serverSelectionTimeoutMS: 60000,
-                tls: true,
+                ssl: true,
             },
         }),
         cookie: {
