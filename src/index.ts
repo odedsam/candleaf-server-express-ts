@@ -20,7 +20,7 @@ configureSession(app);
 
 connectDB()
   .then(() => {
-    const portToListen = Number(process.env.PORT) || ENV.PORT || 8080;
+    const portToListen = ENV.PORT || 8080;
     console.log(`App Port: ${portToListen}`);
     app.listen(portToListen, () =>
       console.log(`Server running on port ${portToListen}`)

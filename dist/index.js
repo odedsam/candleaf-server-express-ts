@@ -20,7 +20,7 @@ app.use("/api", routes_1.default);
 (0, db_1.configureSession)(app);
 (0, db_1.connectDB)()
     .then(() => {
-    const portToListen = Number(process.env.PORT) || env_1.ENV.PORT || 8080;
+    const portToListen = env_1.ENV.PORT || 8080;
     console.log(`App Port: ${portToListen}`);
     app.listen(portToListen, () => console.log(`Server running on port ${portToListen}`));
 })

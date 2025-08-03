@@ -36,8 +36,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.corsOptions = exports.ENV = void 0;
 const envSchema_1 = require("../schemas/envSchema");
 const dotenv = __importStar(require("dotenv"));
-dotenv.config();
 const isProduction = process.env.NODE_ENV === "production";
+if (!isProduction)
+    dotenv.config();
 const validatedEnv = envSchema_1.envSchema.parse(process.env);
 const requiredEnvVars = [
     "PORT",
