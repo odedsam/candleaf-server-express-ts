@@ -9,21 +9,18 @@ import cors from "cors";
 const app = express();
 
 app.use(cors(corsOptions));
-app.options('*', cors(corsOptions));
+app.options("*", cors(corsOptions));
 app.use(cookieParser());
 app.use(express.json());
-
 
 app.use(httpLogger);
 
 app.use("/api", routes);
 configureSession(app);
 
-
-
 connectDB()
   .then(() => {
-    console.log("Railway Port:", ENV.PORT)
+    console.log("App Port:", ENV.PORT);
     const portToListen = ENV.PORT;
     app.listen(portToListen, () => console.log(` Server running on port ${portToListen}`));
   })

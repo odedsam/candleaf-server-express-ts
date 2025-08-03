@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: candleaf-backend
+    env: node
+    plan: free
+    buildCommand: |
+      pnpm install --frozen-lockfile
+      pnpm build
+    startCommand: pnpm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 8080
