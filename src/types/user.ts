@@ -1,4 +1,5 @@
 import { Document } from 'mongoose';
+import { Request } from 'express';
 
 export interface UserPayload {
   _id: string;
@@ -7,8 +8,9 @@ export interface UserPayload {
   avatar?: string | null;
   email_verified_at?: string | null;
   role?: "user" | "admin";
-  provider: "google" | "local";
+  provider?: "google" | "local";
   resetToken?:string
+  cookies: Record<string, string>;
   resetTokenExp?:Date,
 }
 

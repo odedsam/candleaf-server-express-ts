@@ -9,7 +9,6 @@ import bcrypt from "bcryptjs";
 const authRepo = new AuthRepository();
 const userRepo = new UserRepository();
 
-
 export class AuthService {
   async register(name: string, email: string, password: string) {
     const existingUser = await userRepo.findByEmail(email);
@@ -18,7 +17,7 @@ export class AuthService {
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
-    const user = (await userRepo.create({ name, email })) as UserDocument;
+    const user = (await userRepo.create({ name, email, provider: "local" })) as UserDocument;
     const fetchedUser = await userRepo.findById(user._id);
     await authRepo.create({
       user: user._id,
@@ -46,47 +45,51 @@ export class AuthService {
 
     return { user, token: createToken(user._id.toString()) };
   }
+
   async loginWithGoogle(accessToken: string) {
     const googleUser = await fetchGoogleUser(accessToken);
 
     if (!googleUser?.id || !googleUser?.email) {
-      throw new Error("Invalid Google user data");
+      throw new Error("Invalid Google user data: missing ID Or Email");
     }
 
-    let auth = await authRepo.findByProviderId(googleUser.id);
-    let user;
+    let user = await userRepo.findByEmail(googleUser.email);
 
-    if (!auth) {
-      user = await userRepo.findByEmail(googleUser.email);
-      if (!user) {
-        user = await userRepo.create({
-          name: googleUser.name,
-          avatar: googleUser.avatar,
-          email: googleUser.email,
-          provider: "google",
-        });
-      }
+    if (!user) {
+      user = await userRepo.create({
+        name: googleUser.name || "No Name",
+        avatar: googleUser.avatar || "",
+        email: googleUser.email,
+        provider: "google",
+      });
       await authRepo.create({
         user: user._id,
         provider: "google",
         providerId: googleUser.id,
       });
-    } else {
-      user = await userRepo.findById(auth.user.toString());
-      if (!user) {
-        throw new Error("Linked user not found for Google account");
-      }
     }
 
     return { user, token: createToken(user._id.toString()) };
   }
-  async logout(userId?: string | any) {
-    console.log(`User ${userId} logged out (client-side token deletion).`);
-    return { message: "Logged out successfully" };
+
+  async logout(userId?: string) {
+    if (!userId) {
+      console.warn("Logout attempt without userId");
+      return { message: "Logged out successfully (no user session found)" };
+    }
+
+    try {
+      console.log(`User ${userId} logged out successfully.`);
+      return { message: "Logged out successfully" };
+    } catch (error) {
+      console.error(`Logout error for user ${userId}:`, error);
+      throw new Error("Failed to logout user");
+    }
   }
+
   async verifyToken(token: string) {
     try {
-      const decoded = await verifyToken(token);
+      const decoded = verifyToken(token);
       if (!decoded?.userId) {
         return null;
       }
@@ -103,7 +106,7 @@ export class AuthService {
     // const devUrl =`http://localhost:5173`;
 
     const token = createResetToken(user.id);
-    const prodUrl=`https://candleaf-front.vercel.app`
+    const prodUrl = `https://candleaf-front.vercel.app`;
     const resetLink = `${prodUrl}/auth/reset-password?token=${token}`;
     await sendForgotPasswordEmail(email, resetLink);
   }

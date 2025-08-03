@@ -1,37 +1,50 @@
 import { Request, Response, NextFunction } from 'express'
-import jwt, {JwtPayload, VerifyErrors} from 'jsonwebtoken'
-import { ENV } from '../config/env'
-import { AuthenticatedRequest, UserPayload } from '../types'
+import {  verifyToken } from '../utils/jwt'
+import { UserRepository } from '../modules/v1/user/user.repo'
 
-type Decoded = string | JwtPayload | undefined
+const userRepo = new UserRepository()
 
-export const authGuard = (req: Request, res: Response, next: NextFunction): void => {
-  const token = req.cookies?.token
-
-  if (!token) {
-    res.status(401).json({ message: 'Unauthorized' })
-    return
-  }
-
-  jwt.verify(token, ENV.JWT_SECRET, (err:VerifyErrors | null, decoded:Decoded ) => {
-    if (err) {
-      return res.status(403).json({ message: 'Invalid token' })
+export interface AuthenticatedRequestV extends Request {
+  user?: any
+}
+export const authGuard = async (
+  req: AuthenticatedRequestV,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
+  try {
+    const token = req.cookies?.candleaf_token;
+    if (!token) {
+      res.status(401).json({ message: 'Unauthorized - No token' });
+      return;
     }
 
-    (req as any).user = decoded as UserPayload
-    next()
-  })
+    const decoded = verifyToken(token);
+    if (!decoded) {
+      res.status(403).json({ message: 'Invalid token' });
+      return;
+    }
 
-}
+    const user = await userRepo.findById(decoded.userId);
+    if (!user) {
+      res.status(404).json({ message: 'User not found' });
+      return;
+    }
 
-
-
-
-
-
-export const requireAdmin = (req: AuthenticatedRequest, res: Response, next: NextFunction)=> {
-  if (!req.user || req.user.role !== 'admin') {
-    return res.status(403).send('Forbidden')
+    req.user = user;
+    next();
+  } catch (err) {
+    res.status(500).json({ message: 'Internal server error' });
   }
-  next()
+};
+
+export const requireAdmin = (
+  req: AuthenticatedRequestV,
+  res: Response,
+  next: NextFunction
+) => {
+  if (!req.user || req.user.role !== 'admin') {
+    return res.status(403).json({ message: 'Forbidden - Admins only' })
+  }
+  return next()
 }

@@ -1,6 +1,9 @@
 import { UserRepository } from "./user.repo";
 import { IUser } from "./user.model";
+
 const userRepo = new UserRepository();
+;
+
 
 export class UserService {
   async getUserProfile(userId: string) {

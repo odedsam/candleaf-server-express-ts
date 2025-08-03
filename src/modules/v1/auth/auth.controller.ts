@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { AuthService } from "./auth.service";
+import { ENV } from "../../../config/env";
 
 const authService = new AuthService();
 interface AuthenticateUserRequest {
@@ -23,26 +24,33 @@ export class AuthController {
     try {
       const { email, password } = req.body;
       const { token, user } = await authService.login(email, password);
-      res.cookie("token", token, {
+      res.cookie("candleaf_token", token, {
         httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "strict",
-        maxAge: 24 * 60 * 60 * 1000,
+        secure: ENV.NODE_ENV === "production",
+        sameSite: ENV.NODE_ENV === "production" ? "none" : "lax",
+        maxAge: 7 * 24 * 60 * 60 * 1000,
+        path: "/",
       });
+      console.log("cookie sent the token ", token);
       res.status(200).json({ user });
     } catch (error: any) {
       res.status(401).json({ message: "Invalid credentials" });
     }
   }
+
   async googleLogin(req: Request, res: Response) {
     try {
       const { token: accessToken } = req.body;
-      const googleUser = await authService.loginWithGoogle(accessToken);
+      const { token, user } = await authService.loginWithGoogle(accessToken);
 
-      if (!googleUser) {
-        res.status(401).json({ message: "Invalid Google Token " });
-      }
-      res.status(200).json(googleUser);
+      res.cookie("candleaf_token", token, {
+        httpOnly: true,
+        secure: ENV.NODE_ENV === "production",
+        sameSite: ENV.NODE_ENV === "production" ? "none" : "lax",
+        maxAge: 7 * 24 * 60 * 60 * 1000,
+        path: "/",
+      });
+      res.status(200).json({ user });
     } catch (error: any) {
       console.error("Google login error:", error);
       res.status(401).json({ message: "Google login failed" });
@@ -52,10 +60,12 @@ export class AuthController {
   async logout(req: Request<AuthenticateUserRequest>, res: Response) {
     try {
       const userId = req.body.user?.id;
-      res.clearCookie("token", {
+      res.clearCookie("candleaf_token", {
         httpOnly: true,
-        secure: true,
-        sameSite: "strict",
+        secure: process.env.NODE_ENV === "production",
+        sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+        maxAge: 24 * 60 * 60 * 1000,
+        path: "/",
       });
       const result = await authService.logout(userId);
 
@@ -63,23 +73,6 @@ export class AuthController {
     } catch (error: any) {
       console.error("Logout error:", error);
       res.status(500).json({ message: "Logout failed" });
-    }
-  }
-  async authenticate(req: Request, res: Response) {
-    try {
-      const token = req.headers.authorization?.split(" ")[1];
-      if (!token) {
-        return res.status(401).json({ message: "Unauthorized - No token provided" });
-      }
-      const user = await authService.verifyToken(token);
-      if (user) {
-        (req as any).user = user;
-        res.status(200).json(user);
-      } else {
-        return res.status(401).json({ message: "Unauthorized - Invalid token" });
-      }
-    } catch (error: any) {
-      return res.status(401).json({ message: "Unauthorized - Invalid token" });
     }
   }
 

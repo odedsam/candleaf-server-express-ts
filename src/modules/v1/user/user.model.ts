@@ -8,8 +8,8 @@ export interface IUser {
   role: 'user' | 'admin';
   provider: 'google' | 'local';
   email_verified_at?: string | null;
-  createdAt?: Date;
-  updatedAt?: Date;
+  createdAt?: string | Date;
+  updatedAt?: string | Date;
   resetToken?: string | null;
   resetTokenExp?: Date | null;
 }
@@ -21,7 +21,7 @@ const formatILTime = (date: Date) =>
 const userSchema = new Schema<IUser>(
   {
     name: { type: String, required: true },
-    email: { type: String, required: true, unique: true },
+    email: { type: String, required: true, unique: true,toLowerCase:true },
     avatar: { type: String },
     role: { type: String, enum: ['user', 'admin'], default: 'user' },
   },

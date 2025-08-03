@@ -1,10 +1,11 @@
 import { Request, Response } from "express";
 import { generateOrderId } from "../../../utils/generate";
 import { orderRepository } from "../order/order.repo";
+import { getNextOrderNumber } from "../../../utils/getNextOrderNumber";
 
 export const checkoutController = async (req: Request, res: Response):Promise<any> => {
   try {
-    const { shipping, payment, cartItems } = req.body;
+    const { shipping, payment, cartItems,userId,isGuest } = req.body;
 
     if (!shipping || !payment || !cartItems?.cartItems?.length) {
       return res.status(400).json({
@@ -22,10 +23,13 @@ export const checkoutController = async (req: Request, res: Response):Promise<an
       quantity: item.quantity,
       subTotal: item.price * item.quantity,
     }));
+    const generateOrderNumber=await getNextOrderNumber()
 
 
     const newOrder = await orderRepository.create({
       order_id: generateOrderId(),
+      orderNumber:generateOrderNumber,
+      user:userId,
       email: shipping.email,
       name: fullName,
       city: shipping.city,
@@ -33,6 +37,7 @@ export const checkoutController = async (req: Request, res: Response):Promise<an
       postal_code: shipping.postalCode,
       shipping_note: shipping.address,
       shipping_method: payment.shippingMethod,
+      isGuest,
       products,
       sub_total: cartItems.subTotal,
       status: 'pending',

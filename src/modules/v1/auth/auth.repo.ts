@@ -9,6 +9,9 @@ export class AuthRepository {
   async findByUserId(userId: string | Types.ObjectId) {
     return await AuthModel.findOne({ user: userId });
   }
+  async findByEmail(email:string){
+    return await AuthModel.findOne({email:email});
+  }
 
   async findByProviderId(providerId: string) {
     return await AuthModel.findOne({ providerId });

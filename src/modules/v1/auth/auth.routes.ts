@@ -1,6 +1,6 @@
-import { RequestHandler, Router } from "express";
+import { RequestHandler, Router, Response, NextFunction } from "express";
 import { AuthController } from "./auth.controller";
-import { authGuard } from "../../../middleware/authGuard";
+import { AuthenticatedRequestV, authGuard } from "../../../middleware/authGuard";
 import { emailPasswordSchema, googleLoginSchema } from "../../../schemas/authSchema";
 import { validateRequest } from "../../../middleware/validateRequest";
 import { registerSchema } from "../../../schemas/userSchema";
@@ -21,9 +21,12 @@ const bindHandler = (controller: any, method: string): RequestHandler => {
 router.post("/google", validateRequest(googleLoginSchema), bindHandler(authController, "googleLogin"));
 router.post("/register", validateRequest(registerSchema), bindHandler(authController, "register"));
 router.post("/login", validateRequest(emailPasswordSchema), bindHandler(authController, "login"));
-router.post("/verify", authGuard, bindHandler(authController, "authenticate"));
+
+router.post('/verify', authGuard, (req: AuthenticatedRequestV, res: Response, _next: NextFunction):void => {
+   res.status(200).json(req.user);
+});
+
 router.post("/logout", authGuard, bindHandler(authController, "logout"));
-router.get("/authenticate", bindHandler(authController, "authenticate"));
 router.post("/forgot-password", bindHandler(authController, "forgotPassword"));
 router.post("/reset-password", bindHandler(authController, "resetPassword"));
 

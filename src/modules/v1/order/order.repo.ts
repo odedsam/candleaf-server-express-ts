@@ -21,6 +21,17 @@ export class OrderRepository {
   async list(): Promise<OrderDocument[]> {
     return await Order.find().sort({ createdAt: -1 });
   }
+async findUserHistoryOrders(userId?: string, guestEmail?: string) {
+  if (userId) {
+    return await Order.find({ user: userId }).populate("user", "name email").sort({ createdAt: -1 });
+  }
+  if (guestEmail) {
+    return await Order.find({ guestEmail }).sort({ createdAt: -1 });
+  }
+  return [];
+}
+
+
 
   async delete(order_id: string): Promise<void> {
     await Order.deleteOne({ order_id });

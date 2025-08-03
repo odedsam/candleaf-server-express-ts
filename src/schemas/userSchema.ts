@@ -10,7 +10,7 @@ export const registerSchema = z.object({
     .regex(/[A-Z]/, "Password must contain at least one uppercase letter")
     .regex(/[0-9]/, "Password must contain at least one number")
     .regex(/[\W_]/, "Password must contain at least one special symbol (e.g., !@#$)"),
-  authMethod: z.enum(["local", "google"]),
+  provider: z.enum(["local", "google"]),
   role: z.string().optional().default("user"),
   profileImage: z.string()
     .url("Invalid URL format")
