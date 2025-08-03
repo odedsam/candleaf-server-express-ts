@@ -2,7 +2,7 @@ services:
   - type: web
     name: candleaf-server-express-ts
     env: node
-    region: oregon # US West
+    region: oregon
     plan: free
     buildCommand: |
       pnpm install --frozen-lockfile

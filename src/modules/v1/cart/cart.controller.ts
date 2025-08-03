@@ -2,7 +2,7 @@ import { Response, Request } from "express";
 import { getUserCart, addToCart, removeFromCart, syncCart } from "./cart.service";
 
 export interface AuthRequest extends Request {
-  user?: { id: string; email: string; role?: string };
+  user?: any;
 }
 
 export const getCart = async (req: AuthRequest, res: Response): Promise<void> => {
