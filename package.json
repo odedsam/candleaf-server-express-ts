@@ -7,11 +7,11 @@
   "author": "Oded",
   "license": "ISC",
   "scripts": {
-    "clean": "rimraf ./dist",
     "build": "tsc -p tsconfig.json",
     "start": "node dist/index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon --ext ts --exec ts-node -r tsconfig-paths/register src/index.ts",
+    "dev:build": "pnpm run build && pnpm start",
     "lint": "eslint --config ./eslint.config.ts --fix .",
     "lint:file": "eslint --config ./eslint.config.ts --fix"
   },
@@ -57,6 +57,6 @@
     "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.2.0",
     "tsx": "^4.20.3",
-    "typescript": "^5.7.3"
+    "typescript": "^5.8.2"
   }
 }

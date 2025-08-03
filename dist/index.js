@@ -20,11 +20,10 @@ app.use("/api", routes_1.default);
 (0, db_1.configureSession)(app);
 (0, db_1.connectDB)()
     .then(() => {
-    console.log("App Port:", env_1.ENV.PORT);
-    const portToListen = env_1.ENV.PORT || 8080;
-    app.listen(portToListen, () => console.log(` Server running on port ${portToListen}`));
+    const portToListen = Number(process.env.PORT) || env_1.ENV.PORT || 8080;
+    console.log(`App Port: ${portToListen}`);
+    app.listen(portToListen, () => console.log(`Server running on port ${portToListen}`));
 })
     .catch((error) => {
     console.error("Failed to start the server:", error);
 });
-//# sourceMappingURL=index.js.map

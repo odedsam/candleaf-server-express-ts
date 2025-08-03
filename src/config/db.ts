@@ -6,7 +6,7 @@ import { Express } from "express";
 
 export const connectDB = async () => {
   try {
-    await mongoose.connect(ENV.MONGO_URI, {
+    await mongoose.connect(process.env.MONGO_URI!, {
       serverSelectionTimeoutMS: 60000,
     });
     console.log("Connected To MongoDB");

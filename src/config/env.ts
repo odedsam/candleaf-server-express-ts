@@ -1,4 +1,4 @@
-import dotenv from "dotenv";
+import * as dotenv from "dotenv";
 import { envSchema } from "../schemas/envSchema";
 
 const isProduction = process.env.NODE_ENV === "production";

@@ -20,9 +20,11 @@ configureSession(app);
 
 connectDB()
   .then(() => {
-    console.log("App Port:", ENV.PORT);
-    const portToListen = ENV.PORT || 8080;
-    app.listen(portToListen, () => console.log(` Server running on port ${portToListen}`));
+    const portToListen = Number(process.env.PORT) || ENV.PORT || 8080;
+    console.log(`App Port: ${portToListen}`);
+    app.listen(portToListen, () =>
+      console.log(`Server running on port ${portToListen}`)
+    );
   })
   .catch((error) => {
     console.error("Failed to start the server:", error);
