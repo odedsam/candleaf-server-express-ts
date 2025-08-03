@@ -15,6 +15,9 @@
     "lint": "eslint --config ./eslint.config.ts --fix .",
     "lint:file": "eslint --config ./eslint.config.ts --fix"
   },
+    "engines": {
+    "node": "20.x"
+  },
   "dependencies": {
     "@sendgrid/mail": "^8.1.5",
     "axios": "^1.7.9",
