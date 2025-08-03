@@ -34,16 +34,26 @@ var __importStar = (this && this.__importStar) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.corsOptions = exports.ENV = void 0;
-const dotenv = __importStar(require("dotenv"));
 const envSchema_1 = require("../schemas/envSchema");
+const dotenv = __importStar(require("dotenv"));
+dotenv.config();
 const isProduction = process.env.NODE_ENV === "production";
-const envFile = isProduction ? ".env.production" : ".env";
-dotenv.config({ path: envFile });
 const validatedEnv = envSchema_1.envSchema.parse(process.env);
-const requiredEnvVars = ["PORT", "MONGO_URI", "JWT_SECRET", "JWT_RESET_SECRET", "SESSION_SECRET", "NODE_ENV", "GOOGLE_CLIENT_ID", "GOOGLE_SECRET_ID", "SUPPORT_EMAIL", "SENDGRID_API_KEY"];
+const requiredEnvVars = [
+    "PORT",
+    "MONGO_URI",
+    "JWT_SECRET",
+    "JWT_RESET_SECRET",
+    "SESSION_SECRET",
+    "NODE_ENV",
+    "GOOGLE_CLIENT_ID",
+    "GOOGLE_SECRET_ID",
+    "SUPPORT_EMAIL",
+    "SENDGRID_API_KEY",
+];
 requiredEnvVars.forEach((varName) => {
     if (!process.env[varName]) {
-        console.error(` Missing required environment variable: ${varName}`);
+        console.error(`Missing required environment variable: ${varName}`);
         process.exit(1);
     }
 });
@@ -60,7 +70,10 @@ exports.ENV = {
     NODE_ENV: isProduction ? "production" : "development",
 };
 exports.corsOptions = {
-    origin: ['http://localhost:5173', 'https://candleaf-front.vercel.app'],
+    origin: [
+        "http://localhost:5173",
+        "https://candleaf-front.vercel.app",
+    ],
     methods: ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE"],
     credentials: true,
     allowedHeaders: ["Content-Type", "Authorization"],

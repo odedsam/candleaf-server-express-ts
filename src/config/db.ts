@@ -1,13 +1,17 @@
+import type { Express } from "express";
+import { ENV } from "./env";
 import mongoose from "mongoose";
 import session from "express-session";
 import MongoStore from "connect-mongo";
-import { ENV } from "./env";
-import { Express } from "express";
+
+
+
 
 export const connectDB = async () => {
   try {
-    await mongoose.connect(process.env.MONGO_URI!, {
+    await mongoose.connect(ENV.MONGO_URI!, {
       serverSelectionTimeoutMS: 60000,
+      tls:true,
     });
     console.log("Connected To MongoDB");
   } catch (err: any) {
@@ -23,10 +27,12 @@ export const configureSession = (app: Express) => {
       resave: false,
       saveUninitialized: false,
       store: MongoStore.create({
-        mongoUrl: ENV.MONGO_URI,
+        mongoUrl: ENV.MONGO_URI!,
         collectionName: "sessions",
         mongoOptions: {
           serverSelectionTimeoutMS: 60000,
+        tls:true,
+
         },
       }),
       cookie: {

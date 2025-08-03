@@ -4,14 +4,15 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.configureSession = exports.connectDB = void 0;
+const env_1 = require("./env");
 const mongoose_1 = __importDefault(require("mongoose"));
 const express_session_1 = __importDefault(require("express-session"));
 const connect_mongo_1 = __importDefault(require("connect-mongo"));
-const env_1 = require("./env");
 const connectDB = async () => {
     try {
-        await mongoose_1.default.connect(process.env.MONGO_URI, {
+        await mongoose_1.default.connect(env_1.ENV.MONGO_URI, {
             serverSelectionTimeoutMS: 60000,
+            tls: true,
         });
         console.log("Connected To MongoDB");
     }
@@ -31,6 +32,7 @@ const configureSession = (app) => {
             collectionName: "sessions",
             mongoOptions: {
                 serverSelectionTimeoutMS: 60000,
+                tls: true,
             },
         }),
         cookie: {
