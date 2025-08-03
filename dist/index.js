@@ -21,7 +21,7 @@ app.use("/api", routes_1.default);
 (0, db_1.connectDB)()
     .then(() => {
     console.log("App Port:", env_1.ENV.PORT);
-    const portToListen = env_1.ENV.PORT;
+    const portToListen = env_1.ENV.PORT || 8080;
     app.listen(portToListen, () => console.log(` Server running on port ${portToListen}`));
 })
     .catch((error) => {
