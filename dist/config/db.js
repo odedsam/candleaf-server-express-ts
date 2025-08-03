@@ -11,13 +11,12 @@ const connect_mongo_1 = __importDefault(require("connect-mongo"));
 const connectDB = async () => {
     try {
         await mongoose_1.default.connect(env_1.ENV.MONGO_URI, {
-            serverSelectionTimeoutMS: 60000,
-            ssl: true,
+            serverSelectionTimeoutMS: 20000,
         });
-        console.log("Connected To MongoDB");
+        console.log("Connected to MongoDB");
     }
     catch (err) {
-        console.error("MongoDB Connection Error:", err);
+        console.error("❌ MongoDB Connection Error:", err);
         process.exit(1);
     }
 };
@@ -31,8 +30,7 @@ const configureSession = (app) => {
             mongoUrl: env_1.ENV.MONGO_URI,
             collectionName: "sessions",
             mongoOptions: {
-                serverSelectionTimeoutMS: 60000,
-                ssl: true,
+                serverSelectionTimeoutMS: 20000,
             },
         }),
         cookie: {
