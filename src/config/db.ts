@@ -7,7 +7,7 @@ import { Express } from "express";
 export const connectDB = async () => {
   try {
     await mongoose.connect(ENV.MONGO_URI, {
-      serverSelectionTimeoutMS: 5000,
+      serverSelectionTimeoutMS: 60000,
     });
     console.log("Connected To MongoDB");
   } catch (err: any) {
@@ -26,7 +26,7 @@ export const configureSession = (app: Express) => {
         mongoUrl: ENV.MONGO_URI,
         collectionName: "sessions",
         mongoOptions: {
-          serverSelectionTimeoutMS: 5000,
+          serverSelectionTimeoutMS: 60000,
         },
       }),
       cookie: {

@@ -11,7 +11,7 @@ const env_1 = require("./env");
 const connectDB = async () => {
     try {
         await mongoose_1.default.connect(env_1.ENV.MONGO_URI, {
-            serverSelectionTimeoutMS: 5000,
+            serverSelectionTimeoutMS: 60000,
         });
         console.log("Connected To MongoDB");
     }
@@ -30,7 +30,7 @@ const configureSession = (app) => {
             mongoUrl: env_1.ENV.MONGO_URI,
             collectionName: "sessions",
             mongoOptions: {
-                serverSelectionTimeoutMS: 5000,
+                serverSelectionTimeoutMS: 60000,
             },
         }),
         cookie: {
