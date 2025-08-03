@@ -9,7 +9,6 @@ shortcut.md
 node_modules/
 
 # Ignore Build & Cache Files
-dist/
 out/
 .cache/
 .next/

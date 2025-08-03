@@ -1,0 +1,24 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const authGuard_1 = require("../middleware/authGuard");
+const auth_routes_1 = __importDefault(require("../modules/v1/auth/auth.routes"));
+const user_routes_1 = __importDefault(require("../modules/v1/user/user.routes"));
+const order_routes_1 = __importDefault(require("../modules/v1/order/order.routes"));
+const health_1 = __importDefault(require("./health"));
+const public_routes_1 = __importDefault(require("../modules/v1/public/public.routes"));
+const checkout_routes_1 = __importDefault(require("../modules/v1/checkout/checkout.routes"));
+const admin_routes_1 = __importDefault(require("../modules/v1/admin/admin.routes"));
+const router = (0, express_1.Router)();
+router.use("/v1/auth", auth_routes_1.default);
+router.use("/v1/health", health_1.default);
+router.use("/v1/user", user_routes_1.default);
+router.use("/v1/orders", order_routes_1.default);
+router.use("/v1/checkout", checkout_routes_1.default);
+router.use("/v1", public_routes_1.default);
+router.use("/protected/admin", authGuard_1.requireAdmin, admin_routes_1.default);
+exports.default = router;
+//# sourceMappingURL=index.js.map
