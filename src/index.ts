@@ -21,7 +21,7 @@ configureSession(app);
 connectDB()
   .then(() => {
     console.log("App Port:", ENV.PORT);
-    const portToListen = ENV.PORT;
+    const portToListen = ENV.PORT || 8080;
     app.listen(portToListen, () => console.log(` Server running on port ${portToListen}`));
   })
   .catch((error) => {
