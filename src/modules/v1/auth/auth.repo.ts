@@ -1,16 +1,16 @@
 import { Types } from "mongoose";
-import { AuthModel,IAuth } from "./auth.model";
+import { AuthModel, IAuth } from "./auth.model";
 
 export class AuthRepository {
-  async create(authData: Omit<IAuth, 'user'> & { user: Types.ObjectId }) {
+  async create(authData: Omit<IAuth, "user"> & { user: Types.ObjectId }) {
     return await AuthModel.create(authData);
   }
 
   async findByUserId(userId: string | Types.ObjectId) {
     return await AuthModel.findOne({ user: userId });
   }
-  async findByEmail(email:string){
-    return await AuthModel.findOne({email:email});
+  async findByEmail(email: string) {
+    return await AuthModel.findOne({ email: email });
   }
 
   async findByProviderId(providerId: string) {
@@ -25,13 +25,11 @@ export class AuthRepository {
     return await AuthModel.findOneAndUpdate({ user: userId }, { resetToken, resetTokenExp });
   }
 
-   async update(userId: string, updateData: Partial<IAuth>) {
-      return await AuthModel.findByIdAndUpdate(userId, updateData, { new: true });
-    }
+  async update(userId: string, updateData: Partial<IAuth>) {
+    return await AuthModel.findByIdAndUpdate(userId, updateData, { new: true });
+  }
 
   async verifyEmail(userId: string | Types.ObjectId) {
     return await AuthModel.findOneAndUpdate({ user: userId }, { email_verified_at: new Date().toISOString() });
   }
-
 }
-

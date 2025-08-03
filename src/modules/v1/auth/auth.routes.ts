@@ -22,8 +22,8 @@ router.post("/google", validateRequest(googleLoginSchema), bindHandler(authContr
 router.post("/register", validateRequest(registerSchema), bindHandler(authController, "register"));
 router.post("/login", validateRequest(emailPasswordSchema), bindHandler(authController, "login"));
 
-router.post('/verify', authGuard, (req: AuthenticatedRequestV, res: Response, _next: NextFunction):void => {
-   res.status(200).json(req.user);
+router.post("/verify", authGuard, (req: AuthenticatedRequestV, res: Response, _next: NextFunction): void => {
+  res.status(200).json(req.user);
 });
 
 router.post("/logout", authGuard, bindHandler(authController, "logout"));

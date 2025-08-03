@@ -3,9 +3,9 @@ import { generateOrderId } from "../../../utils/generate";
 import { orderRepository } from "../order/order.repo";
 import { getNextOrderNumber } from "../../../utils/getNextOrderNumber";
 
-export const checkoutController = async (req: Request, res: Response):Promise<any> => {
+export const checkoutController = async (req: Request, res: Response): Promise<any> => {
   try {
-    const { shipping, payment, cartItems,userId,isGuest } = req.body;
+    const { shipping, payment, cartItems, userId, isGuest } = req.body;
 
     if (!shipping || !payment || !cartItems?.cartItems?.length) {
       return res.status(400).json({
@@ -16,20 +16,19 @@ export const checkoutController = async (req: Request, res: Response):Promise<an
 
     const fullName = `${shipping.name} ${shipping.lastName}`;
 
-     const products = cartItems.cartItems.map((item: any) => ({
+    const products = cartItems.cartItems.map((item: any) => ({
       title: item.title,
       image: item.image,
       price: item.price,
       quantity: item.quantity,
       subTotal: item.price * item.quantity,
     }));
-    const generateOrderNumber=await getNextOrderNumber()
-
+    const generateOrderNumber = await getNextOrderNumber();
 
     const newOrder = await orderRepository.create({
       order_id: generateOrderId(),
-      orderNumber:generateOrderNumber,
-      user:userId,
+      orderNumber: generateOrderNumber,
+      user: userId,
       email: shipping.email,
       name: fullName,
       city: shipping.city,
@@ -40,7 +39,7 @@ export const checkoutController = async (req: Request, res: Response):Promise<an
       isGuest,
       products,
       sub_total: cartItems.subTotal,
-      status: 'pending',
+      status: "pending",
     });
 
     console.log(newOrder);
@@ -48,7 +47,7 @@ export const checkoutController = async (req: Request, res: Response):Promise<an
     return res.status(201).json({
       success: true,
       message: "Order successfully placed.",
-      userConfirmation:newOrder,
+      userConfirmation: newOrder,
     });
   } catch (err) {
     console.error("Checkout error:", err);

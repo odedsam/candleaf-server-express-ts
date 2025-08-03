@@ -1,4 +1,4 @@
-import mongoose, { Schema, Document } from 'mongoose';
+import mongoose, { Schema, Document } from "mongoose";
 
 export interface Contact extends Document {
   name: string;
@@ -14,4 +14,4 @@ const ContactSchema: Schema = new Schema({
   createdAt: { type: Date, default: Date.now },
 });
 
-export default mongoose.model<Contact>('Contact', ContactSchema);
+export default mongoose.model<Contact>("Contact", ContactSchema);

@@ -7,7 +7,7 @@ interface ICounter extends Document {
 
 const counterSchema = new Schema<ICounter>({
   name: { type: String, required: true, unique: true },
-  value: { type: Number, default: 0 }
+  value: { type: Number, default: 0 },
 });
 
 export const Counter = model<ICounter>("Counter", counterSchema);

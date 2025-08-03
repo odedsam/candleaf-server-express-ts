@@ -15,7 +15,6 @@ export const handleContactForm = async (req: Request, res: Response) => {
 
     console.log("Contact form data saved:", savedContact);
     res.status(201).json({ message: "Message received and saved successfully!", data: savedContact });
-
   } catch (error) {
     console.error("Error saving contact form data:", error);
     res.status(500).json({ message: "Failed to save message." });

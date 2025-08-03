@@ -10,9 +10,9 @@ interface ProductItem {
 }
 
 export interface OrderDocument extends Document {
-  user:IUser
+  user: IUser;
   order_id: string;
-  orderNumber:string;
+  orderNumber: string;
   email: string;
   name: string;
   city: string;
@@ -22,7 +22,7 @@ export interface OrderDocument extends Document {
   shipping_method: string;
   products: ProductItem[];
   sub_total: number;
-  isGuest:boolean;
+  isGuest: boolean;
   status: "pending" | "paid" | "shipped" | "delivered" | "cancelled";
   createdAt: Date;
   updatedAt: Date;
@@ -41,11 +41,11 @@ const ProductItemSchema: Schema = new Schema(
 
 const OrderSchema: Schema = new Schema<OrderDocument>(
   {
-      user: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
-    required: false,
-  },
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: false,
+    },
     order_id: { type: String, required: true, unique: true },
     orderNumber: { type: String, required: true, unique: true },
     email: { type: String, required: true },
@@ -57,7 +57,7 @@ const OrderSchema: Schema = new Schema<OrderDocument>(
     shipping_method: { type: String, required: true },
     products: { type: [ProductItemSchema], required: true },
     sub_total: { type: Number, required: true },
-    isGuest: { type:Boolean, required: true },
+    isGuest: { type: Boolean, required: true },
     status: {
       type: String,
       enum: ["pending", "paid", "shipped", "delivered", "cancelled"],

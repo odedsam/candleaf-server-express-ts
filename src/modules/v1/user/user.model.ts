@@ -1,12 +1,12 @@
-import { Schema, model } from 'mongoose';
+import { Schema, model } from "mongoose";
 
 export interface IUser {
   name: string;
   email: string;
   password?: string | null;
   avatar?: string | null;
-  role: 'user' | 'admin';
-  provider: 'google' | 'local';
+  role: "user" | "admin";
+  provider: "google" | "local";
   email_verified_at?: string | null;
   createdAt?: string | Date;
   updatedAt?: string | Date;
@@ -14,16 +14,16 @@ export interface IUser {
   resetTokenExp?: Date | null;
 }
 const formatILTime = (date: Date) =>
-  new Date(date).toLocaleString('he-IL', {
-    timeZone: 'Asia/Jerusalem',
+  new Date(date).toLocaleString("he-IL", {
+    timeZone: "Asia/Jerusalem",
   });
 
 const userSchema = new Schema<IUser>(
   {
     name: { type: String, required: true },
-    email: { type: String, required: true, unique: true,toLowerCase:true },
+    email: { type: String, required: true, unique: true, toLowerCase: true },
     avatar: { type: String },
-    role: { type: String, enum: ['user', 'admin'], default: 'user' },
+    role: { type: String, enum: ["user", "admin"], default: "user" },
   },
   {
     timestamps: true,
@@ -37,4 +37,4 @@ const userSchema = new Schema<IUser>(
   }
 );
 
-export const UserModel = model<IUser>('User', userSchema);
+export const UserModel = model<IUser>("User", userSchema);

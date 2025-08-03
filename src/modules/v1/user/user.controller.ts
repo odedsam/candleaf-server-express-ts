@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { UserService } from "./user.service";
-     import { orderRepository } from "../order/order.repo";
+import { orderRepository } from "../order/order.repo";
 
 const userService = new UserService();
 
@@ -8,9 +8,9 @@ export class UserController {
   static async getProfile(req: Request, res: Response) {
     try {
       const user = await userService.getUserProfile(req.params.id);
-const userOrdersHistory = await orderRepository.findUserHistoryOrders(req.params.id);
+      const userOrdersHistory = await orderRepository.findUserHistoryOrders(req.params.id);
 
-      res.json({userOrdersHistory,user});
+      res.json({ userOrdersHistory, user });
     } catch (error: any) {
       res.status(404).json({ message: error.message });
     }

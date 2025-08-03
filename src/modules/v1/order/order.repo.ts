@@ -11,27 +11,21 @@ export class OrderRepository {
   }
 
   async updateStatus(order_id: string, status: OrderDocument["status"]): Promise<OrderDocument | null> {
-    return await Order.findOneAndUpdate(
-      { order_id },
-      { status },
-      { new: true }
-    );
+    return await Order.findOneAndUpdate({ order_id }, { status }, { new: true });
   }
 
   async list(): Promise<OrderDocument[]> {
     return await Order.find().sort({ createdAt: -1 });
   }
-async findUserHistoryOrders(userId?: string, guestEmail?: string) {
-  if (userId) {
-    return await Order.find({ user: userId }).populate("user", "name email").sort({ createdAt: -1 });
+  async findUserHistoryOrders(userId?: string, guestEmail?: string) {
+    if (userId) {
+      return await Order.find({ user: userId }).populate("user", "name email").sort({ createdAt: -1 });
+    }
+    if (guestEmail) {
+      return await Order.find({ guestEmail }).sort({ createdAt: -1 });
+    }
+    return [];
   }
-  if (guestEmail) {
-    return await Order.find({ guestEmail }).sort({ createdAt: -1 });
-  }
-  return [];
-}
-
-
 
   async delete(order_id: string): Promise<void> {
     await Order.deleteOne({ order_id });
